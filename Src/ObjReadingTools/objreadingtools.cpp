@@ -163,21 +163,21 @@ bool ObjReadingTools::readModel(QTextStream &stream, DrawableModel &model, QStri
                 errMsg = QString("Line %1. ").arg(lineInd) + errMsg;
                 return false;
             }
-            model.vertices.append(vertex);
+            model.m_vertices.append(vertex);
         } else if (token == "vt") {
             QVector2D texCoord;
             if(!ObjReadingTools::Utils::parseTexCoord(body, texCoord, errMsg)) {
                 errMsg = QString("Line %1. ").arg(lineInd) + errMsg;
                 return false;
             }
-            model.texCoords.append(texCoord);
+            model.m_texCoords.append(texCoord);
         } else if (token == "vn") {
             QVector3D normal;
             if(!ObjReadingTools::Utils::parseNormal(body, normal, errMsg)){
                 errMsg = QString("Line %1. ").arg(lineInd) + errMsg;
                 return false;
             }
-            model.normals.append(normal);
+            model.m_normals.append(normal);
         } else if (token == "f") {
             QVector<int> vericesInd;
             QVector<int> texCoordsInd;
@@ -186,9 +186,9 @@ bool ObjReadingTools::readModel(QTextStream &stream, DrawableModel &model, QStri
                 errMsg = QString("Line %1. ").arg(lineInd) + errMsg;
                 return false;
             }
-            model.polygonsVerticesIndices.append(vericesInd);
-            model.polygonsTexCoordsIndices.append(texCoordsInd);
-            model.polygonsNormalsIndices.append(normalsInd);
+            model.m_polygonsVerticesIndices.append(vericesInd);
+            model.m_polygonsTexCoordsIndices.append(texCoordsInd);
+            model.m_polygonsNormalsIndices.append(normalsInd);
         } else if (token == "l") {
             // line specification
         } else if (token == "g") {

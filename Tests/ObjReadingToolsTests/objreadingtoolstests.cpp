@@ -586,22 +586,22 @@ void ObjredingToolsTests::readModel_validData_test01()
 
     DrawableModel expected;
 
-    expected.vertices = {
+    expected.m_vertices = {
         {1.0f,   2.0f,  3.0f},
         {-1.15f, 3.15f, 4.0f},
         {3.0f,   3.45f, 3.0f}};
 
-    expected.texCoords = {
+    expected.m_texCoords = {
         {0.5f,  -0.5f},
         {0.25f, 3.14f}};
 
-    expected.normals = {
+    expected.m_normals = {
         {0.15f, 0.15f, 0.15f},
         {12.0f, 13.0f, 14.0f}};
 
-    expected.polygonsVerticesIndices = {{1, 2, 3}};
-    expected.polygonsTexCoordsIndices = {{1, 2, 3}};
-    expected.polygonsNormalsIndices = {{1, 2, 2}};
+    expected.m_polygonsVerticesIndices = {{1, 2, 3}};
+    expected.m_polygonsTexCoordsIndices = {{1, 2, 3}};
+    expected.m_polygonsNormalsIndices = {{1, 2, 2}};
 
     //QCOMPARE(actual, expected);
 }

@@ -22,13 +22,13 @@ public:
     bool read(const QString &filename, QString &errMsg);
     bool read(QTextStream &stream, QString &errMsg);
 
-    QVector<QVector3D> vertices;
-    QVector<QVector2D> texCoords;
-    QVector<QVector3D> normals;
+    QVector<QVector3D> m_vertices;
+    QVector<QVector2D> m_texCoords;
+    QVector<QVector3D> m_normals;
 
-    QVector<QVector<int>> polygonsVerticesIndices;
-    QVector<QVector<int>> polygonsTexCoordsIndices;
-    QVector<QVector<int>> polygonsNormalsIndices;
+    QVector<QVector<int>> m_polygonsVerticesIndices;
+    QVector<QVector<int>> m_polygonsTexCoordsIndices;
+    QVector<QVector<int>> m_polygonsNormalsIndices;
 
     void draw(const QMatrix4x4 &modelViewMatrix, const QMatrix4x4 &projectionMatrix, QImage &image, int **zbuffer) override;
 };
