@@ -16,6 +16,8 @@ int main(int argc, char *argv[])
 
     Camera camera;
     Viewport viewport(&camera);
+    camera.setPos({0, 0, 2});
+    camera.setUp({0, 1, 0});
     viewport.setWidth(4096);
     viewport.setHight(4096);
     DrawableModel model;

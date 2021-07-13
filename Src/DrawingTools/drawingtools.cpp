@@ -84,25 +84,39 @@ void NDCDrawingTools::drawLine(QImage &image, QVector3D p1, QVector3D p2, int **
 
     int dx = p2.x() - p1.x();
     int dy = p2.y() - p1.y();
+    int dz = p2.z() - p1.z();
 
     float a = 0;
+    float b = 0;
     if(std::abs(dx) > std::abs(dy)) {
         if (p1.x() > p2.x())
             std::swap(p1, p2);
         a = (float)dy / dx;
+        b = (float)dz / dx;
         float y = p1.y();
+        float z = p1.z();
         for(int x = p1.x(); x <= p2.x(); ++x) {
-            image.setPixelColor(x, y, color);
+            if(z >= zbuffer[x][(int)y]){
+                zbuffer[x][(int)y] = z;
+                image.setPixelColor(x, y, color);
+            }
             y += a;
+            z += b;
         }
     } else {
         if(p1.y() > p2.y())
             std::swap(p1, p2);
         a = (float)dx / dy;
+        b = (float)dz / dy;
         float x = p1.x();
+        float z = p1.z();
         for(int y = p1.y(); y <= p2.y(); ++y) {
-            image.setPixelColor(x, y, color);
+            if(z >= zbuffer[(int)x][y]){
+                zbuffer[(int)x][y] = z;
+                image.setPixelColor(x, y, color);
+            }
             x += a;
+            z += b;
         }
     }
 }
@@ -140,18 +154,14 @@ void NDCDrawingTools::drawTriangel(QImage &image, QVector3D p1, QVector3D p2, QV
             int x2 = (float)(y - p1.y()) / a2 * b2 + p1.x();
             int z2 = (float)(y - p1.y()) / a2 * c2 + p1.z();
 
-            float a = (float)(z2 - z1) / (x2 - x1);
-
-            float z = z1;
-
             if(x1 > x2)
                 std::swap(x1, x2);
             for(int x = x1; x <= x2; ++x) {
-                if(z > zbuffer[x][y]) {
+                float z = (float)(x - x1) / (x2 - x1) * (z2 - z1) + z1;
+                if(z >= zbuffer[x][y]) {
                     image.setPixelColor(x, y, color);
                     zbuffer[x][y] = z;
                 }
-                z += a;
             }
         }
 
@@ -165,18 +175,15 @@ void NDCDrawingTools::drawTriangel(QImage &image, QVector3D p1, QVector3D p2, QV
             int x2 = (float)(y - p1.y()) / a2 * b2 + p1.x();
             int z2 = (float)(y - p1.y()) / a2 * c2 + p1.z();
 
-            float a = (float)(z2 - z1) / (x2 - x1);
-
-            float z = z1;
-
             if(x1 > x2)
                 std::swap(x1, x2);
+
             for(int x = x1; x <= x2; ++x) {
-                if(z > zbuffer[x][y]) {
+                float z = (float)(x - x1) / (x2 - x1) * (z2 - z1) + z1;
+                if(z >= zbuffer[x][y]) {
                     image.setPixelColor(x, y, color);
                     zbuffer[x][y] = z;
                 }
-                z += a;
             }
         }
 }
