@@ -11,6 +11,7 @@ include(DrawableModel/DrawableModel.pri)
 include(DrawingTools/DrawingTools.pri)
 include(ObjReadingTools/ObjReadingTools.pri)
 include(WorldCoordsTools/WorldCoordsTools.pri)
+include(HomogeneousCoordinatesTools/HomogeneousCoordinatesTools.pri)
 
 SOURCES += \
     main.cpp

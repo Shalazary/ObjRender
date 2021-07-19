@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "HomogeneousCoordinatesTools/homogeneouscoordinatestools.h"
 
 Camera::Camera(float left, float right, float bottom, float top, float far, float near) :
     m_left(left),
@@ -11,37 +12,23 @@ Camera::Camera(float left, float right, float bottom, float top, float far, floa
 
 }
 
-QMatrix4x4 Camera::modelView() const
+Camera::Camera(float fov, float aspectRatio, float near, float far) :
+    m_fov(fov),
+    m_aspectRatio(aspectRatio),
+    m_near(near),
+    m_far(far)
 {
-    /*
-    QVector3D direction = (m_pos - m_target).normalized();
-    QVector3D right = QVector3D::crossProduct(direction, m_up).normalized();
-    QVector3D up = QVector3D::crossProduct(right, direction);
-    QMatrix4x4 m(
-        right.x(), up.x(), direction.x(), -m_target.x(),
-        right.y(), up.y(), direction.y(), -m_target.y(),
-        right.z(), up.z(), direction.z(), -m_target.z(),
-                0,      0,             0,             1);
 
-    */
-    QMatrix4x4 m;
-    m.lookAt(m_pos, m_target, -m_up);
-    return m;
+}
+
+QMatrix4x4 Camera::lookAt() const
+{
+    return HomogeneousCoordinatesTools::lookAt(m_pos, m_target, m_up);
 }
 
 QMatrix4x4 Camera::perspectiveProjection() const
 {
-    QMatrix4x4 m;
-    m.frustum(m_left, m_right, m_bottom, m_top, m_near, m_far);
-
-    /*
-    QMatrix4x4 m(
-        2 * m_near / (m_right - m_left),                                0,  (m_right + m_left) / (m_right - m_left),                                    0,
-                                       0, 2 * m_near / (m_top - m_bottom),  (m_top + m_bottom) / (m_top - m_bottom),                                    0,
-                                       0,                               0,     -(m_far + m_near) / (m_far - m_near),   - m_far * m_near / (m_far - m_near),
-                                       0,                               0,                                       -1,                                    0);
-                                       */
-    return m;
+    return HomogeneousCoordinatesTools::perspective(m_fov, m_aspectRatio, m_near, m_far);
 }
 
 QMatrix4x4 Camera::orthographicProjection() const
@@ -137,5 +124,25 @@ float Camera::far() const
 void Camera::setFar(float far)
 {
     m_far = far;
+}
+
+float Camera::fov() const
+{
+    return m_fov;
+}
+
+void Camera::setFov(float fov)
+{
+    m_fov = fov;
+}
+
+float Camera::aspectRatio() const
+{
+    return m_aspectRatio;
+}
+
+void Camera::setAspectRatio(float aspectRatio)
+{
+    m_aspectRatio = aspectRatio;
 }
 

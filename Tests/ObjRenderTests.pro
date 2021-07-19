@@ -6,9 +6,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include(ObjReadingToolsTests/ObjReadingToolsTests.pri)
 include(DrawingToolsTests/DrawingToolsTests.pri)
-include(CameraTests/CameraTests.pri)
-include(ViewportTests/ViewportTests.pri)
 include(WorldCoordsToolsTests/WorldCoordsToolsTests.pri)
+include(HomogeneousCoordinatesToolsTests/HomogeneousCoordinatesToolsTests.pri)
 
 SOURCES += \
     main.cpp

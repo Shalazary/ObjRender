@@ -1,15 +1,17 @@
 #include "ObjReadingToolsTests/objreadingtoolstests.h"
 #include "WorldCoordsToolsTests/worldcoordstoolstests.h"
-#include <QtTest>
-#include <QMatrix4x4>
+#include "HomogeneousCoordinatesToolsTests/homogeneouscoordinatestoolstests.h"
+#include <QTest>
 
 int main()
 {
     ObjredingToolsTests test1;
     QTest::qExec(&test1);
 
-    WorldCoordsToolsTests test2;
+    HomogeneousCoordinatesToolsTests test2;
     QTest::qExec(&test2);
 
+    WorldCoordsToolsTests test3;
+    QTest::qExec(&test3);
     return 0;
 }

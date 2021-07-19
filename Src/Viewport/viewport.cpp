@@ -20,7 +20,7 @@ QImage Viewport::render() const
     QImage image(m_width, m_hight, QImage::Format_RGB32);
     image.fill(Qt::black);
 
-    QMatrix4x4 MV = m_camera->modelView();
+    QMatrix4x4 MV = m_camera->lookAt();
     QMatrix4x4 P = m_camera->perspectiveProjection();
 
     int **zbuffer = new int *[m_hight];
