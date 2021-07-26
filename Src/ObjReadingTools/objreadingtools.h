@@ -7,10 +7,10 @@
 #include <QString>
 #include <QTextStream>
 
-#include "DrawableModel/drawablemodel.h"
+#include "ModelGeometry/ModelGeometry/modelgeometry.h"
 
 namespace ObjReadingTools {
-bool readModel(QTextStream &stream, DrawableModel &model, QString &errMsg);
+bool readModelGeometry(QTextStream &stream, ModelGeometry &model, QString &errMsg);
 namespace Utils {
 bool parseVertex(const QString &body, QVector3D &vertex, QString &errMsg);
 bool parseTexCoord(const QString &body, QVector2D &texCoord, QString &errMsg);

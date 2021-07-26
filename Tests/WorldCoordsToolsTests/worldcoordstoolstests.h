@@ -18,14 +18,4 @@ private slots:
     void worldToScreanZ_test02();
     void worldToScreanZ_test03();
     void worldToScreanZ_test04();
-
-    void worldToScrean_test01();
-    void worldToScrean_test02();
-    void worldToScrean_test03();
-    void worldToScrean_test04();
-
-    void worldNDCToScrean_test01();
-    void worldNDCToScrean_test02();
-    void worldNDCToScrean_test03();
-    void worldNDCToScrean_test04();
 };

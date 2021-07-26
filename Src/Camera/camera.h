@@ -5,25 +5,36 @@
 #include <QtMath>
 #include <QMatrix4x4>
 
+enum CameraMode
+{
+    Orthographic,
+    Perspective,
+    Frustum
+};
+
 class Camera
 {
 public:
     Camera() = default;
-    Camera(float left, float right, float bottom, float top, float far, float near);
-    Camera(float fov, float aspectRatio, float near, float far);
+    Camera(CameraMode mode);
 
-    QMatrix4x4 lookAt() const;
-    QMatrix4x4 perspectiveProjection() const;
-    QMatrix4x4 orthographicProjection() const;
+    QMatrix4x4 view() const;
+    QMatrix4x4 projection() const;
+
+    CameraMode mode() const;
+    void setMode(const CameraMode &mode);
 
     QVector3D pos() const;
     void setPos(const QVector3D &pos);
+    void setPos(float x, float y, float z);
 
     QVector3D target() const;
     void setTarget(const QVector3D &target);
+    void setTarget(float x, float y, float z);
 
     QVector3D up() const;
     void setUp(const QVector3D &up);
+    void setUp(float x, float y, float z);
 
     float left() const;
     void setLeft(float left);
@@ -50,7 +61,9 @@ public:
     void setAspectRatio(float aspectRatio);
 
 private:
-    QVector3D m_pos = {0, 0, 1};
+    CameraMode m_mode = CameraMode::Perspective;
+
+    QVector3D m_pos = {0, 0, 20};
     QVector3D m_target = {0, 0, 0};
     QVector3D m_up = {0, 1, 0};
 
@@ -58,10 +71,10 @@ private:
     float m_right = 1;
     float m_bottom = -1;
     float m_top = 1;
-    float m_near = 0.1;
-    float m_far = 100;
+    float m_near = 0.01;
+    float m_far = 1000;
 
-    float m_fov = M_PI_2;
+    float m_fov = M_PI / 6.0f;
     float m_aspectRatio = 16.0f / 9.0f;
 };
 

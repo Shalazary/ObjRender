@@ -137,7 +137,7 @@ bool ObjReadingTools::Utils::parseFace(const QString &body, QVector<int> &vertic
     return true;
 }
 
-bool ObjReadingTools::readModel(QTextStream &stream, DrawableModel &model, QString &errMsg)
+bool ObjReadingTools::readModelGeometry(QTextStream &stream, ModelGeometry &model, QString &errMsg)
 {
     int lineInd = 0;
     while(!stream.atEnd()){

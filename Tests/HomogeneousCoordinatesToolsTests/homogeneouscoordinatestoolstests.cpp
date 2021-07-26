@@ -24,10 +24,10 @@ void HomogeneousCoordinatesToolsTests::lookAt_test01()
     QVector4D expected3 = {1, 1, -1, 1};
     QVector4D expected4 = {1, 1, 0, 1};
 
-    QCOMPARE(actual1, expected1);
-    QCOMPARE(actual2, expected2);
-    QCOMPARE(actual3, expected3);
-    QCOMPARE(actual4, expected4);
+    QVERIFY(qFuzzyCompare(actual1, expected1));
+    QVERIFY(qFuzzyCompare(actual2, expected2));
+    QVERIFY(qFuzzyCompare(actual3, expected3));
+    QVERIFY(qFuzzyCompare(actual4, expected4));
 }
 
 void HomogeneousCoordinatesToolsTests::lookAt_test02()
@@ -49,10 +49,10 @@ void HomogeneousCoordinatesToolsTests::lookAt_test02()
     QVector4D expected3 = {(float)qSqrt(2) / 2, 1, -(float)qSqrt(2) / 2, 1};
     QVector4D expected4 = {0, 1, 0, 1};
 
-    QCOMPARE(actual1, expected1);
-    QCOMPARE(actual2, expected2);
-    QCOMPARE(actual3, expected3);
-    QCOMPARE(actual4, expected4);
+    QVERIFY(qFuzzyCompare(actual1, expected1));
+    QVERIFY(qFuzzyCompare(actual2, expected2));
+    QVERIFY(qFuzzyCompare(actual3, expected3));
+    QVERIFY(qFuzzyCompare(actual4, expected4));
 }
 
 void HomogeneousCoordinatesToolsTests::lookAt_test03()
@@ -74,10 +74,10 @@ void HomogeneousCoordinatesToolsTests::lookAt_test03()
     QVector4D expected3 = {(float)qSqrt(2) / 2, (float)qSqrt(6) / 6, -(float)qSqrt(3) / 3, 1};
     QVector4D expected4 = {0, 0, 0, 1};
 
-    QCOMPARE(actual1, expected1);
-    QCOMPARE(actual2, expected2);
-    QCOMPARE(actual3, expected3);
-    QCOMPARE(actual4, expected4);
+    QVERIFY(qFuzzyCompare(actual1, expected1));
+    QVERIFY(qFuzzyCompare(actual2, expected2));
+    QVERIFY(qFuzzyCompare(actual3, expected3));
+    QVERIFY(qFuzzyCompare(actual4, expected4));
 }
 
 void HomogeneousCoordinatesToolsTests::frustum_test01()
@@ -154,8 +154,8 @@ void HomogeneousCoordinatesToolsTests::frustum_test03()
     QVector3D expected1 = {-(float)21 / 33, -(float)61 / 77, (float)1 / 11};
     QVector3D expected2 = {(float)19 / 33, (float)59 / 77, (float)1 / 11};
 
-    QCOMPARE(actual1, expected1);
-    QCOMPARE(actual2, expected2);
+    QVERIFY(qFuzzyCompare(actual1, expected1));
+    QVERIFY(qFuzzyCompare(actual2, expected2));
 }
 
 void HomogeneousCoordinatesToolsTests::frustum_test04()
@@ -175,9 +175,9 @@ void HomogeneousCoordinatesToolsTests::frustum_test04()
     QVector3D expected2 = {-(float)31 / 33, -(float)91 / 77, (float)1 / 11};
     QVector3D expected3 = {-(float)14 / 12, -(float)34 / 28, -4};
 
-    QCOMPARE(actual1, expected1);
-    QCOMPARE(actual2, expected2);
-    QCOMPARE(actual3, expected3);
+    QVERIFY(qFuzzyCompare(actual1, expected1));
+    QVERIFY(qFuzzyCompare(actual2, expected2));
+    QVERIFY(qFuzzyCompare(actual3, expected3));
 }
 
 void HomogeneousCoordinatesToolsTests::perspective_test01()
@@ -254,8 +254,8 @@ void HomogeneousCoordinatesToolsTests::perspective_test03()
     QVector3D expected1 = {(float)1 / 3, (float)1 / 6, (float)1 / 3};
     QVector3D expected2 = {-(float)1 / 3, -(float)1 / 2, (float)1 / 3};
 
-    QCOMPARE(actual1, expected1);
-    QCOMPARE(actual2, expected2);
+    QVERIFY(qFuzzyCompare(actual1, expected1));
+    QVERIFY(qFuzzyCompare(actual2, expected2));
 }
 
 void HomogeneousCoordinatesToolsTests::perspective_test04()
@@ -272,8 +272,8 @@ void HomogeneousCoordinatesToolsTests::perspective_test04()
     QVector3D expected1 = {(float)5 / 3, (float)5 / 6, (float)1 / 3};
     QVector3D expected2 = {-(float)1 / 5, -(float)3 / 10, (float)7 / 5};
 
-    QCOMPARE(actual1, expected1);
-    QCOMPARE(actual2, expected2);
+    QVERIFY(qFuzzyCompare(actual1, expected1));
+    QVERIFY(qFuzzyCompare(actual2, expected2));
 }
 
 void HomogeneousCoordinatesToolsTests::orthographic_test01()
@@ -350,8 +350,8 @@ void HomogeneousCoordinatesToolsTests::orthographic_test03()
     QVector3D expected1 = {0, -(float)6 / 7, 0};
     QVector3D expected2 = {-(float)2 / 3, (float)6 / 7, 0};
 
-    QCOMPARE(actual1, expected1);
-    QCOMPARE(actual2, expected2);
+    QVERIFY(qFuzzyCompare(actual1, expected1));
+    QVERIFY(qFuzzyCompare(actual2, expected2));
 }
 
 void HomogeneousCoordinatesToolsTests::orthographic_test04()
@@ -404,14 +404,14 @@ void HomogeneousCoordinatesToolsTests::viewport_test01()
     QVector3D expected7 = {0, 0, 0};
     QVector3D expected8 = {0, 1079, 0};
 
-    QCOMPARE(actual1, expected1);
-    QCOMPARE(actual2, expected2);
-    QCOMPARE(actual3, expected3);
-    QCOMPARE(actual4, expected4);
-    QCOMPARE(actual5, expected5);
-    QCOMPARE(actual6, expected6);
-    QCOMPARE(actual7, expected7);
-    QCOMPARE(actual8, expected8);
+    QVERIFY(qFuzzyCompare(actual1, expected1));
+    QVERIFY(qFuzzyCompare(actual2, expected2));
+    QVERIFY(qFuzzyCompare(actual3, expected3));
+    QVERIFY(qFuzzyCompare(actual4, expected4));
+    QVERIFY(qFuzzyCompare(actual5, expected5));
+    QVERIFY(qFuzzyCompare(actual6, expected6));
+    QVERIFY(qFuzzyCompare(actual7, expected7));
+    QVERIFY(qFuzzyCompare(actual8, expected8));
 }
 
 void HomogeneousCoordinatesToolsTests::viewport_test02()
@@ -432,9 +432,9 @@ void HomogeneousCoordinatesToolsTests::viewport_test02()
     QVector3D expected2 = {593.45f, 431.6f, 165.75f};
     QVector3D expected3 = {323.7f, 809.25f, 51.0f};
 
-    QCOMPARE(actual1, expected1);
-    QCOMPARE(actual2, expected2);
-    QCOMPARE(actual3, expected3);
+    QVERIFY(qFuzzyCompare(actual1, expected1));
+    QVERIFY(qFuzzyCompare(actual2, expected2));
+    QVERIFY(qFuzzyCompare(actual3, expected3));
 }
 
 void HomogeneousCoordinatesToolsTests::viewport_test03()
@@ -452,6 +452,6 @@ void HomogeneousCoordinatesToolsTests::viewport_test03()
     QVector3D expected1 = {1132.95f, -107.9f, 293.25f};
     QVector3D expected2 = {-215.8f, 1348.75f, -76.5f};
 
-    QCOMPARE(actual1, expected1);
-    QCOMPARE(actual2, expected2);
+    QVERIFY(qFuzzyCompare(actual1, expected1));
+    QVERIFY(qFuzzyCompare(actual2, expected2));
 }

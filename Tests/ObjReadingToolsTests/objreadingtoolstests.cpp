@@ -566,57 +566,20 @@ void ObjredingToolsTests::parseFace_invalidData_test06()
 
 void ObjredingToolsTests::readModel_validData_test01()
 {
-    QSKIP("Not implemented");
-    QTextStream data(
-        "v 1 2 3\n"
-        "v -1.15 3.15 4\n"
-        "v 3 3.45 3\n"
-        "vt 0.5 -0.5\n"
-        "vt 0.25 3.14\n"
-        "vt 1.11 3.33\n"
-        "vn 0.15 0.15 0.15\n"
-        "vn 12 13 14\n"
-        "f 1/1/1 2/2/2 3/3/2\n");
 
-    QString errMsg;
-
-    DrawableModel actual;
-
-    ObjReadingTools::readModel(data, actual, errMsg);
-
-    DrawableModel expected;
-
-    expected.m_vertices = {
-        {1.0f,   2.0f,  3.0f},
-        {-1.15f, 3.15f, 4.0f},
-        {3.0f,   3.45f, 3.0f}};
-
-    expected.m_texCoords = {
-        {0.5f,  -0.5f},
-        {0.25f, 3.14f}};
-
-    expected.m_normals = {
-        {0.15f, 0.15f, 0.15f},
-        {12.0f, 13.0f, 14.0f}};
-
-    expected.m_polygonsVerticesIndices = {{1, 2, 3}};
-    expected.m_polygonsTexCoordsIndices = {{1, 2, 3}};
-    expected.m_polygonsNormalsIndices = {{1, 2, 2}};
-
-    //QCOMPARE(actual, expected);
 }
 
 void ObjredingToolsTests::readModel_validData_test02()
 {
-    QSKIP("Not implemented");
+
 }
 
 void ObjredingToolsTests::readModel_invalidData_test01()
 {
-    QSKIP("Not implemented");
+
 }
 
 void ObjredingToolsTests::readModel_invalidData_test02()
 {
-    QSKIP("Not implemented");
+
 }

@@ -20,18 +20,18 @@ QImage Viewport::render() const
     QImage image(m_width, m_hight, QImage::Format_RGB32);
     image.fill(Qt::black);
 
-    QMatrix4x4 MV = m_camera->lookAt();
-    QMatrix4x4 P = m_camera->perspectiveProjection();
+    QMatrix4x4 view = m_camera->view();
+    QMatrix4x4 projection = m_camera->projection();
 
     int **zbuffer = new int *[m_hight];
     for (int i = 0; i < m_hight; ++i)
         zbuffer[i] = new int [m_width];
     for(int i = 0; i < m_hight; ++i)
         for(int j = 0; j < m_width; ++j)
-            zbuffer[i][j] = INT_MIN;
+            zbuffer[i][j] = INT_MAX;
 
     for(DrawableObject *object : m_objects)
-        object->draw(MV, P, image, zbuffer);
+        object->draw(view, projection, image, zbuffer);
 
     return image;
 }

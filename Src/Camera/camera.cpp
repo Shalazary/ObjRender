@@ -1,39 +1,26 @@
 #include "camera.h"
 #include "HomogeneousCoordinatesTools/homogeneouscoordinatestools.h"
 
-Camera::Camera(float left, float right, float bottom, float top, float far, float near) :
-    m_left(left),
-    m_right(right),
-    m_bottom(bottom),
-    m_top(top),
-    m_far(far),
-    m_near(near)
+
+
+Camera::Camera(CameraMode mode) : m_mode(mode)
 {
 
 }
 
-Camera::Camera(float fov, float aspectRatio, float near, float far) :
-    m_fov(fov),
-    m_aspectRatio(aspectRatio),
-    m_near(near),
-    m_far(far)
+QMatrix4x4 Camera::projection() const
 {
-
+    if(m_mode == CameraMode::Orthographic)
+        return HomogeneousCoordinatesTools::orthographic(m_left, m_right, m_bottom, m_top, m_near, m_far);
+    else if(m_mode == CameraMode::Perspective)
+        return HomogeneousCoordinatesTools::perspective(m_fov, m_aspectRatio, m_near, m_far);
+    else if(m_mode == CameraMode::Frustum)
+        return HomogeneousCoordinatesTools::frustum(m_left, m_right, m_bottom, m_top, m_near, m_far);
 }
 
-QMatrix4x4 Camera::lookAt() const
+QMatrix4x4 Camera::view() const
 {
     return HomogeneousCoordinatesTools::lookAt(m_pos, m_target, m_up);
-}
-
-QMatrix4x4 Camera::perspectiveProjection() const
-{
-    return HomogeneousCoordinatesTools::perspective(m_fov, m_aspectRatio, m_near, m_far);
-}
-
-QMatrix4x4 Camera::orthographicProjection() const
-{
-
 }
 
 QVector3D Camera::pos() const
@@ -46,6 +33,11 @@ void Camera::setPos(const QVector3D &pos)
     m_pos = pos;
 }
 
+void Camera::setPos(float x, float y, float z)
+{
+    m_pos = {x, y, z};
+}
+
 QVector3D Camera::target() const
 {
     return m_target;
@@ -56,6 +48,11 @@ void Camera::setTarget(const QVector3D &target)
     m_target = target;
 }
 
+void Camera::setTarget(float x, float y, float z)
+{
+    m_target = {x, y, z};
+}
+
 QVector3D Camera::up() const
 {
     return m_up;
@@ -64,6 +61,11 @@ QVector3D Camera::up() const
 void Camera::setUp(const QVector3D &up)
 {
     m_up = up;
+}
+
+void Camera::setUp(float x, float y, float z)
+{
+    m_up = {x, y, z};
 }
 
 float Camera::left() const
@@ -144,5 +146,15 @@ float Camera::aspectRatio() const
 void Camera::setAspectRatio(float aspectRatio)
 {
     m_aspectRatio = aspectRatio;
+}
+
+CameraMode Camera::mode() const
+{
+    return m_mode;
+}
+
+void Camera::setMode(const CameraMode &mode)
+{
+    m_mode = mode;
 }
 
