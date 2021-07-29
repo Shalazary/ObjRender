@@ -16,7 +16,7 @@ public:
     Viewport(Camera *camera);
     Viewport(Camera *camera, const QVector<DrawableObject *> objects);
 
-    void addModel(DrawableObject *object);
+    void addObject(DrawableObject *object);
 
     QImage render() const;
 
@@ -29,7 +29,7 @@ public:
 private:
     QVector<DrawableObject *> m_objects;
 
-    Camera *m_camera = new Camera;
+    Camera *m_camera = new Camera(CameraMode::Perspective);
 
     int m_width = 1080;
     int m_hight = 1080;

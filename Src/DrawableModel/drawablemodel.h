@@ -17,11 +17,11 @@ public:
     QImage texture() const;
     void setTexture(const QImage &texture);
 
-    void draw(const QMatrix4x4 &modelViewMatrix, const QMatrix4x4 &projectionMatrix, QImage &image, int **zbuffer) override;
+    void draw(const QMatrix4x4 &modelViewMatrix, const QMatrix4x4 &projectionMatrix, QImage &image, float **zbuffer) const override;
 
 private:
     ModelGeometry m_geometry;
-    QImage m_texture;
+    QImage m_texture = QImage(1, 1, QImage::Format_ARGB32);
 };
 
 #endif

@@ -9,6 +9,7 @@ include(Tests/DrawingToolsTests/DrawingToolsTests.pri)
 include(Tests/WorldCoordsToolsTests/WorldCoordsToolsTests.pri)
 include(Tests/HomogeneousCoordinatesToolsTests/HomogeneousCoordinatesToolsTests.pri)
 include(Tests/CameraTests/CameraTests.pri)
+include(Tests/BarycentricCoordinatesToolsTests/BarycentricCoordinatesToolsTests.pri)
 
 SOURCES += \
     Tests/main.cpp

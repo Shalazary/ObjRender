@@ -20,6 +20,8 @@ private slots:
     void drawTriangle_test01();
     void drawTriangle_test02();
     void drawTriangle_test03();
+
+    void test();
 };
 
 #endif

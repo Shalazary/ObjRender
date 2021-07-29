@@ -3,6 +3,7 @@
 #include "HomogeneousCoordinatesToolsTests/homogeneouscoordinatestoolstests.h"
 #include "DrawingToolsTests/drawingtoolstests.h"
 #include "CameraTests/cameratests.h"
+#include "BarycentricCoordinatesToolsTests/barycentric_coordinates_tools_tests.h"
 
 #include <QTest>
 #include <QStringList>
@@ -25,6 +26,9 @@ int main()
 
     CameraTests test5;
     QTest::qExec(&test5);
+
+    BarycentricCoordinatesToolsTests test6;
+    QTest::qExec(&test6);
 
     return 0;
 }

@@ -10,7 +10,7 @@ Viewport::Viewport(Camera *camera, const QVector<DrawableObject *> objects) : m_
 
 }
 
-void Viewport::addModel(DrawableObject *object)
+void Viewport::addObject(DrawableObject *object)
 {
     m_objects.append(object);
 }
@@ -23,12 +23,12 @@ QImage Viewport::render() const
     QMatrix4x4 view = m_camera->view();
     QMatrix4x4 projection = m_camera->projection();
 
-    int **zbuffer = new int *[m_hight];
+    float **zbuffer = new float *[m_hight];
     for (int i = 0; i < m_hight; ++i)
-        zbuffer[i] = new int [m_width];
+        zbuffer[i] = new float [m_width];
     for(int i = 0; i < m_hight; ++i)
         for(int j = 0; j < m_width; ++j)
-            zbuffer[i][j] = INT_MAX;
+            zbuffer[i][j] = 2.0f;
 
     for(DrawableObject *object : m_objects)
         object->draw(view, projection, image, zbuffer);

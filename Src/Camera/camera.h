@@ -5,7 +5,7 @@
 #include <QtMath>
 #include <QMatrix4x4>
 
-enum CameraMode
+enum class CameraMode
 {
     Orthographic,
     Perspective,

@@ -16,6 +16,8 @@ QMatrix4x4 Camera::projection() const
         return HomogeneousCoordinatesTools::perspective(m_fov, m_aspectRatio, m_near, m_far);
     else if(m_mode == CameraMode::Frustum)
         return HomogeneousCoordinatesTools::frustum(m_left, m_right, m_bottom, m_top, m_near, m_far);
+    else
+        return QMatrix4x4();
 }
 
 QMatrix4x4 Camera::view() const

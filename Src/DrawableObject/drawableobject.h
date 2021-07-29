@@ -7,7 +7,7 @@
 class DrawableObject
 {
 public:
-    virtual void draw(const QMatrix4x4 &modelViewMatrix, const QMatrix4x4 &projectionMatrix, QImage &image, int **zbuffer) = 0;
+    virtual void draw(const QMatrix4x4 &modelViewMatrix, const QMatrix4x4 &projectionMatrix, QImage &image, float **zbuffer) const = 0;
 };
 
 #endif

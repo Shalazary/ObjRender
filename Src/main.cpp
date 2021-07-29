@@ -14,12 +14,15 @@
 
 int main(int argc, char *argv[])
 {
+    QString objFilename = "../obj/african_head.obj";
+    QString textureFilename = "../obj/african_head.tga";
+
     QString errMsg;
 
-    Camera camera(CameraMode::Orthographic);
+    Camera camera(CameraMode::Perspective);
     camera.setFov(M_PI / 6.0f);
     camera.setAspectRatio(1);
-    camera.setPos({0, 0, 5});
+    camera.setPos({3, 0, 5});
     camera.setUp({0, 1, 0});
 
     Viewport viewport(&camera);
@@ -27,9 +30,9 @@ int main(int argc, char *argv[])
     viewport.setHight(4096);
 
     ModelGeometry geometry;
-    QFile file("../obj/t1.obj");
+    QFile file(objFilename);
     if(!file.open(QFile::ReadOnly)){
-        qDebug() << "File" << file.fileName() << "not found";
+        qDebug() << "File" << objFilename << "not found";
         return -1;
     }
     QTextStream stream(&file);
@@ -38,10 +41,17 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    QImage texture;
+    if(!texture.load(textureFilename)){
+        qDebug() << "Fail to load" << textureFilename;
+        return -1;
+    }
+
     DrawableModel model;
     model.setGeometry(geometry);
+    model.setTexture(texture);
 
-    viewport.addModel(&model);
+    viewport.addObject(&model);
     viewport.render().save("res.jpg");
 
     return 0;

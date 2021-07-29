@@ -2,6 +2,7 @@
 #define HOMOGENEOUS_COORDINATES_TOOLS_H
 
 #include <QMatrix4x4>
+#include <QVector2D>
 #include <QVector3D>
 
 namespace HomogeneousCoordinatesTools {
@@ -10,6 +11,7 @@ QMatrix4x4 frustum(float left, float right, float botttom, float top, float near
 QMatrix4x4 perspective(float hFov, float aspectRatio, float near, float far);
 QMatrix4x4 orthographic(float left, float right, float bottom, float top, float near, float far);
 QMatrix4x4 viewport(int width, int height, int depth);
+QVector2D mapTexture(QVector2D texCoord, int width, int height);
 }
 
 #endif
