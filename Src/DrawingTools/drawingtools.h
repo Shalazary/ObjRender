@@ -8,7 +8,6 @@
 #include <QColor>
 
 #include "Point3D/point3d.h"
-#include "BarycentricCoordinatesTools/barycentric_coordinates_tools.h"
 
 namespace DrawingTools {
 void drawLine(QImage &image, QPoint p1, QPoint p2, QColor color = QColor("white"));

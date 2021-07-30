@@ -1,5 +1,4 @@
 #include "drawingtools.h"
-#include "WorldCoordsTools/worldcoordstools.h"
 #include "HomogeneousCoordinatesTools/homogeneouscoordinatestools.h"
 #include "BarycentricCoordinatesTools/barycentric_coordinates_tools.h"
 
@@ -141,7 +140,7 @@ void DrawingTools::drawTriangel(
             float z = b[2] * p1.z() + b[0] * p2.z() + b[1] * p3.z();
 
             QVector2D t = b[2] * vt1 + b[0] * vt2 + b[1] * vt3;
-            QVector2D ts = HomogeneousCoordinatesTools::mapTexture(t, texture.width(), texture.height());
+            QPoint ts = HomogeneousCoordinatesTools::mapTexture(t, texture.width(), texture.height());
 
             float intensity = 1;
             if(!lightDirection.isNull()) {

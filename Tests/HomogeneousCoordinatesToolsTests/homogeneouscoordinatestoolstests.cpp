@@ -395,14 +395,14 @@ void HomogeneousCoordinatesToolsTests::viewport_test01()
     QVector3D actual7 = QVector4D(v * p7).toVector3DAffine();
     QVector3D actual8 = QVector4D(v * p8).toVector3DAffine();
 
-    QVector3D expected1 = {1079, 0, 255};
-    QVector3D expected2 = {1079, 0, 0};
-    QVector3D expected3 = {1079, 1079, 255};
-    QVector3D expected4 = {0, 0, 255};
-    QVector3D expected5 = {1079, 1079, 0};
-    QVector3D expected6 = {0, 1079, 255};
-    QVector3D expected7 = {0, 0, 0};
-    QVector3D expected8 = {0, 1079, 0};
+    QVector3D expected1 = {1079, 0, 1};
+    QVector3D expected2 = {1079, 0, -1};
+    QVector3D expected3 = {1079, 1079, 1};
+    QVector3D expected4 = {0, 0, 1};
+    QVector3D expected5 = {1079, 1079, -1};
+    QVector3D expected6 = {0, 1079, 1};
+    QVector3D expected7 = {0, 0, -1};
+    QVector3D expected8 = {0, 1079, -1};
 
     QVERIFY(qFuzzyCompare(actual1, expected1));
     QVERIFY(qFuzzyCompare(actual2, expected2));
@@ -428,9 +428,9 @@ void HomogeneousCoordinatesToolsTests::viewport_test02()
     QVector3D actual3 = QVector4D(v * p3).toVector3DAffine();
 
     // maybe it should convert to int for each coordinate
-    QVector3D expected1 = {539.5f, 539.5f, 127.5f};
-    QVector3D expected2 = {593.45f, 431.6f, 165.75f};
-    QVector3D expected3 = {323.7f, 809.25f, 51.0f};
+    QVector3D expected1 = {539.5f, 539.5f, 0};
+    QVector3D expected2 = {593.45f, 431.6f, 0.3};
+    QVector3D expected3 = {323.7f, 809.25f, -0.6};
 
     QVERIFY(qFuzzyCompare(actual1, expected1));
     QVERIFY(qFuzzyCompare(actual2, expected2));
@@ -449,8 +449,8 @@ void HomogeneousCoordinatesToolsTests::viewport_test03()
     QVector3D actual2 = QVector4D(v * p2).toVector3DAffine();
 
     // maybe it should convert to int for each coordinate
-    QVector3D expected1 = {1132.95f, -107.9f, 293.25f};
-    QVector3D expected2 = {-215.8f, 1348.75f, -76.5f};
+    QVector3D expected1 = {1132.95f, -107.9f, 1.3};
+    QVector3D expected2 = {-215.8f, 1348.75f, -1.6};
 
     QVERIFY(qFuzzyCompare(actual1, expected1));
     QVERIFY(qFuzzyCompare(actual2, expected2));
@@ -466,20 +466,20 @@ void HomogeneousCoordinatesToolsTests::mapTexture_test01()
     const QVector2D p3 = {0.0f, 1.0f};
     const QVector2D p4 = {1.0f, 1.0f};
 
-    const QVector2D actual1 = HomogeneousCoordinatesTools::mapTexture(p1, width, height);
-    const QVector2D actual2 = HomogeneousCoordinatesTools::mapTexture(p2, width, height);
-    const QVector2D actual3 = HomogeneousCoordinatesTools::mapTexture(p3, width, height);
-    const QVector2D actual4 = HomogeneousCoordinatesTools::mapTexture(p4, width, height);
+    const QPoint actual1 = HomogeneousCoordinatesTools::mapTexture(p1, width, height);
+    const QPoint actual2 = HomogeneousCoordinatesTools::mapTexture(p2, width, height);
+    const QPoint actual3 = HomogeneousCoordinatesTools::mapTexture(p3, width, height);
+    const QPoint actual4 = HomogeneousCoordinatesTools::mapTexture(p4, width, height);
 
-    const QVector2D expected1 = {0, 719};
-    const QVector2D expected2 = {1079, 719};
-    const QVector2D expected3 = {0, 0};
-    const QVector2D expected4 = {1079, 0};
+    const QPoint expected1 = {0, 719};
+    const QPoint expected2 = {1079, 719};
+    const QPoint expected3 = {0, 0};
+    const QPoint expected4 = {1079, 0};
 
-    QVERIFY(qFuzzyCompare(actual1, expected1));
-    QVERIFY(qFuzzyCompare(actual2, expected2));
-    QVERIFY(qFuzzyCompare(actual3, expected3));
-    QVERIFY(qFuzzyCompare(actual4, expected4));
+    QCOMPARE(actual1, expected1);
+    QCOMPARE(actual2, expected2);
+    QCOMPARE(actual3, expected3);
+    QCOMPARE(actual4, expected4);
 }
 
 void HomogeneousCoordinatesToolsTests::mapTexture_test02()

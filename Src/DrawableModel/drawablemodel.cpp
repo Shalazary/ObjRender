@@ -2,9 +2,6 @@
 #include "DrawingTools/drawingtools.h"
 
 #include <QVector4D>
-#include <Point3D/point3d.h>
-#include <QtDebug>
-#include <QRandomGenerator>
 
 void DrawableModel::draw(const QMatrix4x4 &modelViewMatrix, const QMatrix4x4 &projectionMatrix, QImage &image, float **zbuffer) const
 {

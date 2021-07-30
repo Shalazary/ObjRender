@@ -62,7 +62,7 @@ QMatrix4x4 HomogeneousCoordinatesTools::viewport(int width, int height)
                       0.0f,                 0.0f, 0.0f,                1.0f);
 }
 
-QVector2D HomogeneousCoordinatesTools::mapTexture(QVector2D texCoord, int width, int height)
+QPoint HomogeneousCoordinatesTools::mapTexture(QVector2D texCoord, int width, int height)
 {
-    return QVector2D(texCoord.x() * (width - 1) + 0.5f, -texCoord.y() * (height - 1) + (height - 1) + 0.5f);
+    return QPoint(texCoord.x() * (width - 1) + 0.5f, -texCoord.y() * (height - 1) + (height - 1) + 0.5f);
 }
