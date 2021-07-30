@@ -29,6 +29,10 @@ private slots:
     void viewport_test01();
     void viewport_test02();
     void viewport_test03();
+
+    void mapTexture_test01();
+    void mapTexture_test02();
+    void mapTexture_test03();
 };
 
 #endif

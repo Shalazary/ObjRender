@@ -123,7 +123,7 @@ void DrawingTools::drawTriangel(
     const QVector3D p2 = v2.toVector3DAffine();
     const QVector3D p3 = v3.toVector3DAffine();
 
-    const QMatrix4x4 viewport = HomogeneousCoordinatesTools::viewport(image.width(), image.height(), 256);
+    const QMatrix4x4 viewport = HomogeneousCoordinatesTools::viewport(image.width(), image.height());
     QVector2D ps1 = QVector4D(viewport * p1).toVector2D();
     QVector2D ps2 = QVector4D(viewport * p2).toVector2D();
     QVector2D ps3 = QVector4D(viewport * p3).toVector2D();
@@ -149,14 +149,14 @@ void DrawingTools::drawTriangel(
                 intensity = QVector3D::dotProduct(n, lightDirection);
             }
 
-            if(b[0] <= 1.0f && b[0] >= 0.0f &&
-               b[1] <= 1.0f && b[1] >= 0.0f &&
-               b[2] <= 1.0f && b[2] >= 0.0f &&
+            if((b[0] < 1.0f || qFuzzyCompare(b[0], 1.0f)) && (b[0] > 0.0f || qFuzzyIsNull(b[0])) &&
+               (b[1] < 1.0f || qFuzzyCompare(b[1], 1.0f)) && (b[1] > 0.0f || qFuzzyIsNull(b[1])) &&
+               (b[2] < 1.0f || qFuzzyCompare(b[2], 1.0f)) && (b[2] > 0.0f || qFuzzyIsNull(b[2])) &&
                z <= zbuffer[x][y] &&
                intensity > 0) {
                 zbuffer[x][y] = z;
                 QColor origColor = texture.pixelColor(ts.x(), ts.y());
-                QColor mixedColor = QColor(origColor.red() * intensity, origColor.green() * intensity, origColor.blue() * intensity);
+                QColor mixedColor = QColor(origColor.red() * intensity, origColor.green() * intensity, origColor.blue() * intensity, origColor.alpha());
                 image.setPixelColor(x, y, mixedColor);
             }
         }

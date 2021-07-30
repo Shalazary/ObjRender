@@ -374,7 +374,7 @@ void HomogeneousCoordinatesToolsTests::orthographic_test04()
 
 void HomogeneousCoordinatesToolsTests::viewport_test01()
 {
-    QMatrix4x4 v = HomogeneousCoordinatesTools::viewport(1080, 1080, 256);
+    QMatrix4x4 v = HomogeneousCoordinatesTools::viewport(1080, 1080);
 
     // 1 point for each corner of ndc cube
     QVector4D p1 = {1, 1, 1, 1};
@@ -416,7 +416,7 @@ void HomogeneousCoordinatesToolsTests::viewport_test01()
 
 void HomogeneousCoordinatesToolsTests::viewport_test02()
 {
-    QMatrix4x4 v = HomogeneousCoordinatesTools::viewport(1080, 1080, 256);
+    QMatrix4x4 v = HomogeneousCoordinatesTools::viewport(1080, 1080);
 
     // points inside ndc cube
     QVector4D p1 = {0, 0, 0, 1};
@@ -439,7 +439,7 @@ void HomogeneousCoordinatesToolsTests::viewport_test02()
 
 void HomogeneousCoordinatesToolsTests::viewport_test03()
 {
-    QMatrix4x4 v = HomogeneousCoordinatesTools::viewport(1080, 1080, 256);
+    QMatrix4x4 v = HomogeneousCoordinatesTools::viewport(1080, 1080);
 
     // points outside ndc cube
     QVector4D p1 = {1.1, 1.2, 1.3, 1};
@@ -454,4 +454,40 @@ void HomogeneousCoordinatesToolsTests::viewport_test03()
 
     QVERIFY(qFuzzyCompare(actual1, expected1));
     QVERIFY(qFuzzyCompare(actual2, expected2));
+}
+
+void HomogeneousCoordinatesToolsTests::mapTexture_test01()
+{
+    int width = 1080;
+    int height = 720;
+
+    const QVector2D p1 = {0.0f, 0.0f};
+    const QVector2D p2 = {1.0f, 0.0f};
+    const QVector2D p3 = {0.0f, 1.0f};
+    const QVector2D p4 = {1.0f, 1.0f};
+
+    const QVector2D actual1 = HomogeneousCoordinatesTools::mapTexture(p1, width, height);
+    const QVector2D actual2 = HomogeneousCoordinatesTools::mapTexture(p2, width, height);
+    const QVector2D actual3 = HomogeneousCoordinatesTools::mapTexture(p3, width, height);
+    const QVector2D actual4 = HomogeneousCoordinatesTools::mapTexture(p4, width, height);
+
+    const QVector2D expected1 = {0, 719};
+    const QVector2D expected2 = {1079, 719};
+    const QVector2D expected3 = {0, 0};
+    const QVector2D expected4 = {1079, 0};
+
+    QVERIFY(qFuzzyCompare(actual1, expected1));
+    QVERIFY(qFuzzyCompare(actual2, expected2));
+    QVERIFY(qFuzzyCompare(actual3, expected3));
+    QVERIFY(qFuzzyCompare(actual4, expected4));
+}
+
+void HomogeneousCoordinatesToolsTests::mapTexture_test02()
+{
+
+}
+
+void HomogeneousCoordinatesToolsTests::mapTexture_test03()
+{
+
 }

@@ -104,7 +104,7 @@ void DrawingToolsTests::test()
     int imgSize = 512;
 
     QImage i(imgSize, imgSize, QImage::Format_ARGB32);
-    i.fill(Qt::black);
+    i.fill(Qt::red);
 
     QImage t(imgSize, imgSize, QImage::Format_ARGB32);
     t.load("../obj/1.png");

@@ -53,16 +53,16 @@ QMatrix4x4 HomogeneousCoordinatesTools::orthographic(float left, float right, fl
                          0.0f,                  0.0f,                 0.0f,                             1.0f);
 }
 
-QMatrix4x4 HomogeneousCoordinatesTools::viewport(int width, int height, int depth)
+QMatrix4x4 HomogeneousCoordinatesTools::viewport(int width, int height)
 {
     return QMatrix4x4(
-        (width - 1) / 2.0f,                 0.0f,               0.0f,  (width - 1) / 2.0f,
-                      0.0f, -(height - 1) / 2.0f,               0.0f, (height - 1) / 2.0f,
-                      0.0f,                 0.0f, (depth - 1) / 2.0f,  (depth - 1) / 2.0f,
-                      0.0f,                 0.0f,               0.0f,                1.0f);
+        (width - 1) / 2.0f,                 0.0f, 0.0f,  (width - 1) / 2.0f,
+                      0.0f, -(height - 1) / 2.0f, 0.0f, (height - 1) / 2.0f,
+                      0.0f,                 0.0f, 1.0f,                0.0f,
+                      0.0f,                 0.0f, 0.0f,                1.0f);
 }
 
 QVector2D HomogeneousCoordinatesTools::mapTexture(QVector2D texCoord, int width, int height)
 {
-    return QVector2D(texCoord.x() * (width - 1), -texCoord.y() * (height - 1) + (height - 1));
+    return QVector2D(texCoord.x() * (width - 1) + 0.5f, -texCoord.y() * (height - 1) + (height - 1) + 0.5f);
 }
