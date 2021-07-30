@@ -66,3 +66,8 @@ QVector3D WorldCoordsTools::worldNDCToScrean(QVector3D p, QSize windowSize, int 
 {
     return worldToScrean(p, -1, 1, -1, 1, -1, 1, windowSize.width(), windowSize.height(), depth);
 }
+
+QPoint WorldCoordsTools::worldNDCToScrean(QVector3D p, QSize windowSize)
+{
+    return worldToScrean(p, -1, 1, -1, 1, -1, 1, windowSize.width(), windowSize.height(), 256).toPoint();
+}

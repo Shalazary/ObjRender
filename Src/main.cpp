@@ -12,17 +12,17 @@
 #include <QTextStream>
 #include <QVector3D>
 
-int main(int argc, char *argv[])
+int main()
 {
-    QString objFilename = "../obj/african_head.obj";
-    QString textureFilename = "../obj/african_head.tga";
+    QString objFilename = "../obj/diablo3_pose.obj";
+    QString textureFilename = "../obj/diablo3_pose.tga";
 
     QString errMsg;
 
     Camera camera(CameraMode::Perspective);
     camera.setFov(M_PI / 6.0f);
     camera.setAspectRatio(1);
-    camera.setPos({3, 0, 5});
+    camera.setPos({0, 0, 2});
     camera.setUp({0, 1, 0});
 
     Viewport viewport(&camera);
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
     QImage texture;
     if(!texture.load(textureFilename)){
-        qDebug() << "Fail to load" << textureFilename;
+        qDebug() << "Fail to load texture" << textureFilename;
         return -1;
     }
 

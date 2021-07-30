@@ -12,6 +12,7 @@ QMatrix4x4 frustum(float left, float right, float botttom, float top, float near
 QMatrix4x4 perspective(float hFov, float aspectRatio, float near, float far);
 QMatrix4x4 orthographic(float left, float right, float bottom, float top, float near, float far);
 QMatrix4x4 viewport(int width, int height);
+QPoint mapViewport(QVector4D clipCoord, int width, int height);
 QPoint mapTexture(QVector2D texCoord, int width, int height);
 }
 

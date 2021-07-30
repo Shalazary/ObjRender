@@ -12,6 +12,7 @@ QVector3D worldToScrean(QVector3D p, float left, float right, float bottom, floa
 QVector3D worldToScrean(QVector3D p, float left, float right, float bottom, float top, float near, float far, QSize windowSize, int depth);
 QVector3D worldNDCToScrean(QVector3D p, int width, int hight, int depth);
 QVector3D worldNDCToScrean(QVector3D p, QSize windowSize, int depth);
+QPoint worldNDCToScrean(QVector3D p, QSize windowSize);
 }
 
 #endif
