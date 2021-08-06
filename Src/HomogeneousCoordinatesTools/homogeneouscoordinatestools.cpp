@@ -62,7 +62,34 @@ QMatrix4x4 HomogeneousCoordinatesTools::viewport(int width, int height)
                       0.0f,                 0.0f, 0.0f,                1.0f);
 }
 
-QPoint HomogeneousCoordinatesTools::mapTexture(QVector2D texCoord, int width, int height)
+QVector2D HomogeneousCoordinatesTools::projectToScreenPixelCoordinates(const QVector4D &NDCCoord, int width, int height)
 {
-    return QPoint(texCoord.x() * (width - 1) + 0.5f, -texCoord.y() * (height - 1) + (height - 1) + 0.5f);
+    float x = NDCCoord.x();
+    float y = NDCCoord.y();
+
+    if(x < -1.0f || x > 1.0f)
+        x = x < -1.0f ? -1.0f : 1.0f;
+
+    if(y < -1.0f || y > 1.0f)
+        y = y < -1.0f ? -1.0f : 1.0f;
+
+    return QVector2D(
+         x * (width - 1) / 2.0f + (width - 1) / 2.0f,
+        -y * (height - 1) / 2.0f + (height - 1) / 2.0f
+    );
+}
+
+QVector2D HomogeneousCoordinatesTools::projectToScreenPixelCoordinates(const QVector4D &NDCCoord, const QSize &size)
+{
+    return projectToScreenPixelCoordinates(NDCCoord, size.width(), size.height());
+}
+
+QVector2D HomogeneousCoordinatesTools::projectToTexturePixelCoordinates(const QVector2D &texCoord, int width, int height)
+{
+    return QVector2D(texCoord.x() * (width - 1.0f), -texCoord.y() * (height - 1.0f) + (height - 1.0f));
+}
+
+QVector2D HomogeneousCoordinatesTools::projectToTexturePixelCoordinates(const QVector2D &texCoord, const QSize &size)
+{
+    return projectToTexturePixelCoordinates(texCoord, size.width(), size.height());
 }

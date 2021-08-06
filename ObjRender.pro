@@ -9,6 +9,7 @@ include(Src/Viewport/Viewport.pri)
 include(Src/DrawableModel/DrawableModel.pri)
 include(Src/ObjReadingTools/ObjReadingTools.pri)
 include(Src/ModelGeometry/ModelGeometry/ModelGeometry.pri)
+include(Src/RenderTools/RenderTools.pri)
 
 SOURCES += \
     Src/main.cpp

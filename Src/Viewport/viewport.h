@@ -17,6 +17,7 @@ public:
     Viewport(Camera *camera, const QVector<DrawableObject *> objects);
 
     void addObject(DrawableObject *object);
+    void deleteObject(DrawableObject *object);
 
     QImage render() const;
 
@@ -26,6 +27,9 @@ public:
     int hight() const;
     void setHight(int hight);
 
+    QColor getBackgroundColor() const;
+    void setBackgroundColor(const QColor &value);
+
 private:
     QVector<DrawableObject *> m_objects;
 
@@ -33,6 +37,8 @@ private:
 
     int m_width = 1080;
     int m_hight = 1080;
+
+    QColor backgroundColor = Qt::lightGray;
 };
 
 #endif // VIEWPORT_H

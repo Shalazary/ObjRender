@@ -566,20 +566,138 @@ void ObjredingToolsTests::parseFace_invalidData_test06()
 
 void ObjredingToolsTests::readModel_validData_test01()
 {
+    QString errMsg;
 
+    QString data = "v -1 1 0\n"
+                   "v 1 1 0\n"
+                   "v 1 -1 0\n"
+                   "v -1 -1 0\n"
+                   "f 1 2 3\n"
+                   "f 1 3 4\n";
+
+    QTextStream stream(&data);
+
+    ModelGeometry actual;
+    ObjReadingTools::readModelGeometry(stream, actual, errMsg);
+
+    ModelGeometry expected;
+    expected.m_vertices = {
+        {-1, 1, 0},
+        {1, 1, 0},
+        {1, -1, 0},
+        {-1, -1, 0}
+    };
+    expected.m_polygonsVerticesIndices = {
+        {1, 2, 3},
+        {1, 3, 4}
+    };
+    expected.m_polygonsTexCoordsIndices = {
+        {0, 0, 0},
+        {0, 0, 0}
+    };
+    expected.m_polygonsNormalsIndices = {
+        {0, 0, 0},
+        {0, 0, 0}
+    };
+
+    QCOMPARE(actual, expected);
 }
 
 void ObjredingToolsTests::readModel_validData_test02()
 {
+    QString errMsg;
 
+    QString data = "v -1 1 0\n"
+                   "v 1 1 0\n"
+                   "v 1 -1 0\n"
+                   "v -1 -1 0\n"
+                   "vt 0 1\n"
+                   "vt 1 1\n"
+                   "vt 1 0\n"
+                   "vt 0 0\n"
+                   "f 3/3 2/2 1/1\n"
+                   "f 4/4 3/3 1/1\n";
+
+    QTextStream stream(&data);
+
+    ModelGeometry actual;
+    ObjReadingTools::readModelGeometry(stream, actual, errMsg);
+
+    ModelGeometry expected;
+    expected.m_vertices = {
+        {-1, 1, 0},
+        {1, 1, 0},
+        {1, -1, 0},
+        {-1, -1, 0}
+    };
+    expected.m_texCoords = {
+        {0, 1},
+        {1, 1},
+        {1, 0},
+        {0, 0}
+    };
+    expected.m_polygonsVerticesIndices = {
+        {3, 2, 1},
+        {4, 3, 1}
+    };
+    expected.m_polygonsTexCoordsIndices = {
+        {3, 2, 1},
+        {4, 3, 1}
+    };
+    expected.m_polygonsNormalsIndices = {
+        {0, 0, 0},
+        {0, 0, 0}
+    };
+
+    QCOMPARE(actual, expected);
 }
 
 void ObjredingToolsTests::readModel_invalidData_test01()
 {
+    QString errMsg;
 
+    QString data = "v -1 1 0\n"
+                   "v 1 1 0\n"
+                   "v 1 -1 0\n"
+                   "v -1 -1 0\n"
+                   "vt 0 1\n"
+                   "vt 1 1\n"
+                   "vt 1 0\n"
+                   "vt 0 0\n"
+                   "ff 3/3 2/2 1/1\n"
+                   "f 4/4 3/3 1/1\n";
+
+    QTextStream stream(&data);
+
+    ModelGeometry actual;
+    QVERIFY(!ObjReadingTools::readModelGeometry(stream, actual, errMsg));
+
+    QString expected = "Line 9. Invalid token ff";
+
+    QCOMPARE(errMsg, expected);
 }
 
 void ObjredingToolsTests::readModel_invalidData_test02()
 {
+    QString errMsg;
 
+    QString data = "v -1 1 0\n"
+                   "v 1 1 0\n"
+                   "v 1 -1 0\n"
+                   "v -1 -1 0\n"
+                   "vt 0 1\n"
+                   "vt 1 1\n"
+                   "vt 1 0\n"
+                   "vt 0 0\n"
+                   "f 3/3 2.15/2 1/1\n"
+                   "f 4/4 3/3 1/1\n";
+
+    QTextStream stream(&data);
+
+    ModelGeometry actual;
+    QVERIFY(!ObjReadingTools::readModelGeometry(stream, actual, errMsg));
+
+    QString expected = "Line 9. To int conversion failed in string 2.15";
+
+    QCOMPARE(errMsg, expected);
 }

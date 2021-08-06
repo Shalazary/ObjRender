@@ -466,15 +466,15 @@ void HomogeneousCoordinatesToolsTests::mapTexture_test01()
     const QVector2D p3 = {0.0f, 1.0f};
     const QVector2D p4 = {1.0f, 1.0f};
 
-    const QPoint actual1 = HomogeneousCoordinatesTools::mapTexture(p1, width, height);
-    const QPoint actual2 = HomogeneousCoordinatesTools::mapTexture(p2, width, height);
-    const QPoint actual3 = HomogeneousCoordinatesTools::mapTexture(p3, width, height);
-    const QPoint actual4 = HomogeneousCoordinatesTools::mapTexture(p4, width, height);
+    const QVector2D actual1 = HomogeneousCoordinatesTools::projectToTexturePixelCoordinates(p1, width, height);
+    const QVector2D actual2 = HomogeneousCoordinatesTools::projectToTexturePixelCoordinates(p2, width, height);
+    const QVector2D actual3 = HomogeneousCoordinatesTools::projectToTexturePixelCoordinates(p3, width, height);
+    const QVector2D actual4 = HomogeneousCoordinatesTools::projectToTexturePixelCoordinates(p4, width, height);
 
-    const QPoint expected1 = {0, 719};
-    const QPoint expected2 = {1079, 719};
-    const QPoint expected3 = {0, 0};
-    const QPoint expected4 = {1079, 0};
+    const QVector2D expected1 = {0, 719};
+    const QVector2D expected2 = {1079, 719};
+    const QVector2D expected3 = {0, 0};
+    const QVector2D expected4 = {1079, 0};
 
     QCOMPARE(actual1, expected1);
     QCOMPARE(actual2, expected2);

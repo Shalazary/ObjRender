@@ -19,9 +19,16 @@ public:
 
     void draw(const QMatrix4x4 &modelViewMatrix, const QMatrix4x4 &projectionMatrix, QImage &image, float **zbuffer) const override;
 
+    bool useLight = false;
+    bool useTexture = false;
+
+    QColor color() const;
+    void setColor(const QColor &color);
+
 private:
     ModelGeometry m_geometry;
-    QImage m_texture = QImage(1, 1, QImage::Format_ARGB32);
+    QImage m_texture;
+    QColor m_color = Qt::white;
 };
 
 #endif

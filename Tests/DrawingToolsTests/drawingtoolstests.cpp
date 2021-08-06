@@ -107,7 +107,7 @@ void DrawingToolsTests::test()
     i.fill(Qt::red);
 
     QImage t(imgSize, imgSize, QImage::Format_ARGB32);
-    t.load("../obj/1.png");
+    t.load("../obj/fan.png");
 
     float **zbuffer = new float*[imgSize];
     for(int i = 0; i < imgSize; ++i)

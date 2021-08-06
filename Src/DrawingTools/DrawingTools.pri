@@ -7,6 +7,7 @@ include(../HomogeneousCoordinatesTools/HomogeneousCoordinatesTools.pri)
 include(../BarycentricCoordinatesTools/BarycentricCoordinatesTools.pri)
 include(../Point3D/Point3D.pri)
 include(../WorldCoordsTools/WorldCoordsTools.pri)
+include(../ImageTools/ImageTools.pri)
 
 SOURCES += \
     $$PWD/drawingtools.cpp

@@ -8,8 +8,10 @@ include(Tests/ObjReadingToolsTests/ObjReadingToolsTests.pri)
 include(Tests/DrawingToolsTests/DrawingToolsTests.pri)
 include(Tests/WorldCoordsToolsTests/WorldCoordsToolsTests.pri)
 include(Tests/HomogeneousCoordinatesToolsTests/HomogeneousCoordinatesToolsTests.pri)
-include(Tests/CameraTests/CameraTests.pri)
+#include(Tests/CameraTests/CameraTests.pri)
 include(Tests/BarycentricCoordinatesToolsTests/BarycentricCoordinatesToolsTests.pri)
+include(Tests/ModelGeometryUtilsTests/ModelGeometryUtilsTests.pri)
+include(Tests/ImageToolsTests/ImageToolsTests.pri)
 
 SOURCES += \
     Tests/main.cpp

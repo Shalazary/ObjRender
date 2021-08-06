@@ -22,22 +22,52 @@ QMatrix4x4 Camera::projection() const
 
 QMatrix4x4 Camera::view() const
 {
-    return HomogeneousCoordinatesTools::lookAt(m_pos, m_target, m_up);
+    QMatrix4x4 originTranslation;
+    QMatrix4x4 rotation;
+    QMatrix4x4 targetTranslation;
+    originTranslation.translate(m_origin);
+    rotation.rotate(m_rotation);
+    targetTranslation.translate(m_target);
+
+    QVector3D pos = QVector4D(targetTranslation * rotation * originTranslation * QVector4D(0, 0, 0, 1)).toVector3DAffine();
+    QVector3D target = QVector4D(targetTranslation * QVector4D(0, 0, 0, 1)).toVector3DAffine();
+
+    return HomogeneousCoordinatesTools::lookAt(pos, target, m_up);
 }
 
-QVector3D Camera::pos() const
+QVector3D Camera::origin() const
 {
-    return m_pos;
+    return m_origin;
 }
 
-void Camera::setPos(const QVector3D &pos)
+void Camera::setOrigin(const QVector3D &origin)
 {
-    m_pos = pos;
+    m_origin = origin;
 }
 
-void Camera::setPos(float x, float y, float z)
+void Camera::setOrigin(float x, float y, float z)
 {
-    m_pos = {x, y, z};
+    m_origin = {x, y, z};
+}
+
+QQuaternion Camera::rotation() const
+{
+    return m_rotation;
+}
+
+void Camera::setRotation(const QQuaternion &rotation)
+{
+    m_rotation = rotation;
+}
+
+void Camera::setRotation(float scalar, const QVector3D &vector)
+{
+    m_rotation = QQuaternion(scalar, vector);
+}
+
+void Camera::setRotation(float scalar, float x, float y, float z)
+{
+    m_rotation = QQuaternion(scalar, x, y, z);
 }
 
 QVector3D Camera::target() const
@@ -53,61 +83,6 @@ void Camera::setTarget(const QVector3D &target)
 void Camera::setTarget(float x, float y, float z)
 {
     m_target = {x, y, z};
-}
-
-QVector3D Camera::up() const
-{
-    return m_up;
-}
-
-void Camera::setUp(const QVector3D &up)
-{
-    m_up = up;
-}
-
-void Camera::setUp(float x, float y, float z)
-{
-    m_up = {x, y, z};
-}
-
-float Camera::left() const
-{
-    return m_left;
-}
-
-void Camera::setLeft(float left)
-{
-    m_left = left;
-}
-
-float Camera::right() const
-{
-    return m_right;
-}
-
-void Camera::setRight(float right)
-{
-    m_right = right;
-}
-
-float Camera::bottom() const
-{
-    return m_bottom;
-}
-
-void Camera::setBottom(float bottom)
-{
-    m_bottom = bottom;
-}
-
-float Camera::top() const
-{
-    return m_top;
-}
-
-void Camera::setTop(float top)
-{
-    m_top = top;
 }
 
 float Camera::near() const
@@ -135,9 +110,9 @@ float Camera::fov() const
     return m_fov;
 }
 
-void Camera::setFov(float fov)
+void Camera::setFov(float fovAngle)
 {
-    m_fov = fov;
+    m_fov = (2 * M_PI * fovAngle) / 360.0f;
 }
 
 float Camera::aspectRatio() const
@@ -159,4 +134,8 @@ void Camera::setMode(const CameraMode &mode)
 {
     m_mode = mode;
 }
+
+
+
+
 

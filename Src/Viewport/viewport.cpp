@@ -15,17 +15,26 @@ void Viewport::addObject(DrawableObject *object)
     m_objects.append(object);
 }
 
+void Viewport::deleteObject(DrawableObject *object)
+{
+    int objectInd = m_objects.indexOf(object);
+    if(objectInd != -1)
+        m_objects.remove(objectInd);
+}
+
 QImage Viewport::render() const
 {
     QImage image(m_width, m_hight, QImage::Format_RGB32);
-    image.fill(Qt::black);
+    image.fill(backgroundColor);
 
     QMatrix4x4 view = m_camera->view();
     QMatrix4x4 projection = m_camera->projection();
 
-    float **zbuffer = new float *[m_hight];
-    for (int i = 0; i < m_hight; ++i)
-        zbuffer[i] = new float [m_width];
+    float **zbuffer = new float * [m_hight];
+    zbuffer[0] = new float [m_hight * m_width];
+    for(int i = 1; i < m_hight; ++i)
+        zbuffer[i] = zbuffer[i - 1] + m_width;
+
     for(int i = 0; i < m_hight; ++i)
         for(int j = 0; j < m_width; ++j)
             zbuffer[i][j] = 2.0f;
@@ -54,4 +63,14 @@ int Viewport::hight() const
 void Viewport::setHight(int hight)
 {
     m_hight = hight;
+}
+
+QColor Viewport::getBackgroundColor() const
+{
+    return backgroundColor;
+}
+
+void Viewport::setBackgroundColor(const QColor &value)
+{
+    backgroundColor = value;
 }

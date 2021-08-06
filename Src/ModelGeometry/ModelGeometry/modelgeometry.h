@@ -17,4 +17,6 @@ public:
     QVector<QVector<int>> m_polygonsNormalsIndices;
 };
 
+bool operator ==(const ModelGeometry &m1, const ModelGeometry &m2);
+
 #endif
