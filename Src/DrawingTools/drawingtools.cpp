@@ -129,9 +129,13 @@ void DrawingTools::drawTriangel(
 
     for(int y = minY; y <= maxY; ++y)
         for(int x = minX; x <= maxX; ++x) {
+            //! REVIEW: p -> point, b -> barycentricPoint
+            //! REVIEW: initialization ()
             const QVector2D p = {x, y};
             const QVector3D b = BarycentricCoordinatesTools::toBarycentric(ps1, ps2, ps3, p);
 
+            //! REVIEW: naming
+            //! REVIEW: barycentric interpolation for QVector2D and float
             const float z = b[2] * p1.z() + b[0] * p2.z() + b[1] * p3.z();
 
             const QVector2D t = b[2] * vt1 + b[0] * vt2 + b[1] * vt3;
@@ -139,10 +143,14 @@ void DrawingTools::drawTriangel(
 
             float intensity = 1;
             if(!lightDirection.isNull()) {
+                //! REVIEW: const
+                //! REVIEW: order of barycentrics
                 QVector3D n = QVector3D(b[2] * vn1 + b[0] * vn2 + b[1] * vn3).normalized();
                 intensity = QVector3D::dotProduct(n, lightDirection);
             }
-
+//            const bool isPixelInisdeTriangle = ;
+//            if(!isPixelInisdeTriangle)
+//                continue;
             if((b[0] < 1.0f || qFuzzyCompare(b[0], 1.0f)) && (b[0] > 0.0f || qFuzzyIsNull(b[0])) &&
                (b[1] < 1.0f || qFuzzyCompare(b[1], 1.0f)) && (b[1] > 0.0f || qFuzzyIsNull(b[1])) &&
                (b[2] < 1.0f || qFuzzyCompare(b[2], 1.0f)) && (b[2] > 0.0f || qFuzzyIsNull(b[2])) &&

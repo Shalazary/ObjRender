@@ -33,6 +33,7 @@ void RenderTools::render(
         const QVector<QVector<int>> triangles = ModelGeometryUtils::triangulate(polygonVertices);
 
         for(const QVector<int> &triangel : triangles){
+            //! REVIEW: remove outer constructor
             const QVector4D p1 = QVector4D(MVP * QVector4D(vertices[polygonVertices[triangel[0]] - 1], 1));
             const QVector4D p2 = QVector4D(MVP * QVector4D(vertices[polygonVertices[triangel[1]] - 1], 1));
             const QVector4D p3 = QVector4D(MVP * QVector4D(vertices[polygonVertices[triangel[2]] - 1], 1));

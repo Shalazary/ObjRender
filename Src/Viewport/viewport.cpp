@@ -30,6 +30,7 @@ QImage Viewport::render() const
     const QMatrix4x4 view = m_camera->view();
     const QMatrix4x4 projection = m_camera->projection();
 
+    //! REVIEW: class for 2d arrays. Remember about rule of 5
     float **zbuffer = new float * [m_hight];
     zbuffer[0] = new float [m_hight * m_width];
     for(int i = 1; i < m_hight; ++i)

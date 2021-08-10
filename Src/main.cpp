@@ -14,8 +14,8 @@
 
 int main()
 {
-    QString objFilename = "../obj/NeutralWrapped.obj";
-    QString textureFilename = "../obj/NeutralWrapped.jpg";
+    QString objFilename = "../ObjRender/obj/NeutralWrapped.obj";
+    QString textureFilename = "../ObjRender/obj/NeutralWrapped.jpg";
 
     QString errMsg;
     Camera camera(CameraMode::Perspective);

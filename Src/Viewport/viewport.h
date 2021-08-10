@@ -9,11 +9,13 @@
 #include "DrawableObject/drawableobject.h"
 #include "Camera/camera.h"
 
+//! REVIEW: namespace
 class Viewport
 {
 public:
     Viewport() = default;
     Viewport(Camera *camera);
+    //! REVIEW: const &
     Viewport(Camera *camera, const QVector<DrawableObject *> objects);
 
     void addObject(DrawableObject *object);
@@ -38,6 +40,7 @@ private:
     int m_width = 1080;
     int m_hight = 1080;
 
+    //! REVIEW: m_
     QColor backgroundColor = Qt::lightGray;
 };
 

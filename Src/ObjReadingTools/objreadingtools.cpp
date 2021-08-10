@@ -278,6 +278,7 @@ void ObjReadingTools::Utils::getObjInfo(
             ++nNormals;
         else if(token == "f") {
             ++nPolygons;
+            //! REVIEW: split -> count
             nVerticesInPolygons += body.split(" ", QString::SkipEmptyParts).size();
         }
     }
