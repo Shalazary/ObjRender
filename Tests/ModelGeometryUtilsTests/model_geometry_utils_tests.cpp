@@ -1,7 +1,8 @@
 #include "model_geometry_utils_tests.h"
-#include "ModelGeometry/Utils/utils.h"
 
 #include <QVector>
+
+#include "ModelGeometry/Utils/utils.h"
 
 void ModelGeometryUtilsTests::triangulate_test01()
 {
@@ -46,12 +47,11 @@ void ModelGeometryUtilsTests::calculateNormal_test01()
         {-1, -1, 0}
     };
 
-    QVector<QVector<int>> polygons = {
-        {2, 4, 3},
-        {5, 2, 1}
-    };
+    QVector<int> polygons = {2, 4, 3, 5, 2, 1};
+    QVector<int> starts = {0, 3, 6};
 
-    QVector3D actual = ModelGeometryUtils::calculateNormal(2, vertices, polygons);
+
+    QVector3D actual = ModelGeometryUtils::calculateNormal(2, vertices, polygons, starts);
 
     QVector3D expected = {0, 0, 1};
 
@@ -68,12 +68,10 @@ void ModelGeometryUtilsTests::calculateNormal_test02()
         {-1, -1, -1}
     };
 
-    QVector<QVector<int>> polygons = {
-        {2, 4, 3},
-        {5, 2, 1}
-    };
+    QVector<int> polygons = {2, 4, 3, 5, 2, 1};
+    QVector<int> starts = {0, 3, 6};
 
-    QVector3D actual = ModelGeometryUtils::calculateNormal(2, vertices, polygons);
+    QVector3D actual = ModelGeometryUtils::calculateNormal(2, vertices, polygons, starts);
 
     QVector3D expected = {0, 0, 1};
 
@@ -90,12 +88,10 @@ void ModelGeometryUtilsTests::calculateNormal_test03()
         {0, 0, -1}
     };
 
-    QVector<QVector<int>> polygons = {
-        {2, 4, 3},
-        {5, 2, 1}
-    };
+    QVector<int> polygons = {2, 4, 3, 5, 2, 1};
+    QVector<int> starts = {0, 3, 6};
 
-    QVector3D actual = ModelGeometryUtils::calculateNormal(2, vertices, polygons);
+    QVector3D actual = ModelGeometryUtils::calculateNormal(2, vertices, polygons, starts);
 
     QVector3D expected = {0, 0, 1};
 

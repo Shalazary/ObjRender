@@ -3,18 +3,18 @@
 #include "ModelGeometry/Utils/utils.h"
 #include "DrawingTools/drawingtools.h"
 
-QImage RenderTools::render(
+void RenderTools::render(
+    QImage *image,
+    float **zbuffer,
     const QVector<QVector3D> &vertices,
-    const QVector<QVector<int>> &polygonsVerticesIndices,
+    const QVector<int> &polygonsVerticesIndices,
     const QVector<QVector2D> &texCoords,
-    const QVector<QVector<int>> &polygonsTexCoordsIndices,
+    const QVector<int> &polygonsTexCoordsIndices,
+    const QVector<int> &polygonsStart,
     const QImage &texture,
     const QVector3D &lightDirection,
     const QMatrix4x4 &MVP,
-    const int renderWidth,
-    const int renderHeight,
-    const QColor &modelColor,
-    const QColor &backgroundColor)
+    const QColor &modelColor)
 {
     bool useTexture = true;
     bool useLight = true;
@@ -25,26 +25,17 @@ QImage RenderTools::render(
     if(lightDirection.isNull())
         useLight = false;
 
-    QImage image = QImage(renderWidth, renderHeight, QImage::Format_ARGB32);
-    image.fill(backgroundColor);
+    for(int polygonInd = 0; polygonInd < polygonsStart.size() - 1; ++polygonInd) {
 
-    float **zbuffer = new float * [renderHeight];
-    zbuffer[0] = new float [renderHeight * renderWidth];
-    for(int i = 1; i < renderHeight; ++i)
-        zbuffer[i] = zbuffer[i - 1] + renderWidth;
-    for(int i = 0; i < renderHeight; ++i)
-        for(int j = 0; j < renderWidth; ++j)
-            zbuffer[i][j] = 2.0f;
+        const QVector<int> polygonVertices = polygonsVerticesIndices.mid(polygonsStart[polygonInd], polygonsStart[polygonInd + 1] - polygonsStart[polygonInd]);
+        const QVector<int> polygonTex = polygonsTexCoordsIndices.mid(polygonsStart[polygonInd], polygonsStart[polygonInd + 1] - polygonsStart[polygonInd]);
 
-    for(int polygonInd = 0; polygonInd < polygonsVerticesIndices.size(); ++polygonInd) {
-        QVector<QVector<int>> triangles = ModelGeometryUtils::triangulate(polygonsVerticesIndices[polygonInd]);
+        const QVector<QVector<int>> triangles = ModelGeometryUtils::triangulate(polygonVertices);
+
         for(const QVector<int> &triangel : triangles){
-            QVector<int> polygonVertices = polygonsVerticesIndices[polygonInd];
-            QVector<int> polygonTex = polygonsTexCoordsIndices[polygonInd];
-
-            QVector4D p1 = QVector4D(MVP * QVector4D(vertices[polygonVertices[triangel[0]] - 1], 1));
-            QVector4D p2 = QVector4D(MVP * QVector4D(vertices[polygonVertices[triangel[1]] - 1], 1));
-            QVector4D p3 = QVector4D(MVP * QVector4D(vertices[polygonVertices[triangel[2]] - 1], 1));
+            const QVector4D p1 = QVector4D(MVP * QVector4D(vertices[polygonVertices[triangel[0]] - 1], 1));
+            const QVector4D p2 = QVector4D(MVP * QVector4D(vertices[polygonVertices[triangel[1]] - 1], 1));
+            const QVector4D p3 = QVector4D(MVP * QVector4D(vertices[polygonVertices[triangel[2]] - 1], 1));
 
             QVector2D vt1;
             QVector2D vt2;
@@ -61,26 +52,69 @@ QImage RenderTools::render(
             QVector3D vn3;
 
             if(useLight) {
-                vn1 = ModelGeometryUtils::calculateNormal(polygonVertices[triangel[0]], vertices, polygonsVerticesIndices);
-                vn2 = ModelGeometryUtils::calculateNormal(polygonVertices[triangel[1]], vertices, polygonsVerticesIndices);
-                vn3 = ModelGeometryUtils::calculateNormal(polygonVertices[triangel[2]], vertices, polygonsVerticesIndices);
+                vn1 = ModelGeometryUtils::calculateNormal(polygonVertices[triangel[0]], vertices, polygonsVerticesIndices, polygonsStart);
+                vn2 = ModelGeometryUtils::calculateNormal(polygonVertices[triangel[1]], vertices, polygonsVerticesIndices, polygonsStart);
+                vn3 = ModelGeometryUtils::calculateNormal(polygonVertices[triangel[2]], vertices, polygonsVerticesIndices, polygonsStart);
             }
 
             if(!useTexture && !useLight)
-                DrawingTools::drawTriangel(image, p1, p2, p3, modelColor, zbuffer);
+                DrawingTools::drawTriangel(*image, p1, p2, p3, modelColor, zbuffer);
             else if(!useTexture && useLight)
-                DrawingTools::drawTriangel(image, p1, p2, p3, vn1, vn2, vn3, -lightDirection, modelColor, zbuffer);
+                DrawingTools::drawTriangel(*image, p1, p2, p3, vn1, vn2, vn3, -lightDirection, modelColor, zbuffer);
             else if(useTexture && !useLight)
-                DrawingTools::drawTriangel(image, p1, p2, p3, vt1, vt2, vt3, texture, zbuffer);
+                DrawingTools::drawTriangel(*image, p1, p2, p3, vt1, vt2, vt3, texture, zbuffer);
             else if(useTexture && useLight)
-                DrawingTools::drawTriangel(image, p1, p2, p3, vt1, vt2, vt3, vn1, vn2, vn3, -lightDirection, texture, zbuffer);
+                DrawingTools::drawTriangel(*image, p1, p2, p3, vt1, vt2, vt3, vn1, vn2, vn3, -lightDirection, texture, zbuffer);
         }
     }
+}
+
+QImage RenderTools::render(
+    const QVector<QVector3D> &vertices,
+    const QVector<int> &polygonsVerticesIndices,
+    const QVector<QVector2D> &texCoords,
+    const QVector<int> &polygonsTexCoordsIndices,
+    const QVector<int> &polygonsStart,
+    const QImage &texture,
+    const QVector3D &lightDirection,
+    const QMatrix4x4 &MVP,
+    const int renderWidth,
+    const int renderHeight,
+    const QColor &modelColor,
+    const QColor &backgroundColor)
+{
+    QImage image = QImage(renderWidth, renderHeight, QImage::Format_ARGB32);
+    image.fill(backgroundColor);
+
+    float **zbuffer = new float * [renderHeight];
+    zbuffer[0] = new float [renderHeight * renderWidth];
+    for(int i = 1; i < renderHeight; ++i)
+        zbuffer[i] = zbuffer[i - 1] + renderWidth;
+    for(int i = 0; i < renderHeight; ++i)
+        for(int j = 0; j < renderWidth; ++j)
+            zbuffer[i][j] = 2.0f;
+
+    render(
+        &image,
+        zbuffer,
+        vertices,
+        polygonsVerticesIndices,
+        texCoords,
+        polygonsTexCoordsIndices,
+        polygonsStart,
+        texture,
+        lightDirection,
+        MVP,
+        modelColor);
+
+    delete[] zbuffer[0];
+    delete[] zbuffer;
 
     return image;
 }
 
-QImage RenderTools::render(const ModelGeometry &model,
+QImage RenderTools::render(
+    const ModelGeometry &model,
     const Camera &camera,
     const int renderWidth,
     const int renderHeight,
@@ -88,10 +122,11 @@ QImage RenderTools::render(const ModelGeometry &model,
     const QColor &backgroundColor)
 {
     return render(
-        model.m_vertices,
-        model.m_polygonsVerticesIndices,
-        model.m_texCoords,
-        model.m_polygonsTexCoordsIndices,
+        model.vertices,
+        model.polygonsVerticesIndices,
+        model.texCoords,
+        model.polygonsTexCoordsIndices,
+        model.polygonsStarts,
         QImage(),
         QVector3D(),
         camera.projection() * camera.view(),
@@ -101,7 +136,8 @@ QImage RenderTools::render(const ModelGeometry &model,
         backgroundColor);
 }
 
-QImage RenderTools::render(const ModelGeometry &model,
+QImage RenderTools::render(
+    const ModelGeometry &model,
     const Camera &camera,
     const QVector3D &lightDirection,
     const int renderWidth,
@@ -110,10 +146,11 @@ QImage RenderTools::render(const ModelGeometry &model,
     const QColor &backgroundColor)
 {
     return render(
-        model.m_vertices,
-        model.m_polygonsVerticesIndices,
-        model.m_texCoords,
-        model.m_polygonsTexCoordsIndices,
+        model.vertices,
+        model.polygonsVerticesIndices,
+        model.texCoords,
+        model.polygonsTexCoordsIndices,
+        model.polygonsStarts,
         QImage(),
         lightDirection,
         camera.projection() * camera.view(),
@@ -133,10 +170,11 @@ QImage RenderTools::render(
     const QColor &backgroundColor)
 {
     return render(
-        model.m_vertices,
-        model.m_polygonsVerticesIndices,
-        model.m_texCoords,
-        model.m_polygonsTexCoordsIndices,
+        model.vertices,
+        model.polygonsVerticesIndices,
+        model.texCoords,
+        model.polygonsTexCoordsIndices,
+        model.polygonsStarts,
         texture,
         QVector3D(),
         camera.projection() * camera.view(),
@@ -157,10 +195,11 @@ QImage RenderTools::render(
     const QColor &backgroundColor)
 {
     return render(
-        model.m_vertices,
-        model.m_polygonsVerticesIndices,
-        model.m_texCoords,
-        model.m_polygonsTexCoordsIndices,
+        model.vertices,
+        model.polygonsVerticesIndices,
+        model.texCoords,
+        model.polygonsTexCoordsIndices,
+        model.polygonsStarts,
         texture,
         lightDirection,
         camera.projection() * camera.view(),
@@ -169,3 +208,5 @@ QImage RenderTools::render(
         modelColor,
         backgroundColor);
 }
+
+

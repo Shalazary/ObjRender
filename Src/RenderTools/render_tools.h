@@ -12,11 +12,25 @@
 
 namespace RenderTools {
 
+void render(
+    QImage *image,
+    float **zbuffer,
+    const QVector<QVector3D> &vertices,
+    const QVector<int> &polygonsVerticesIndices,
+    const QVector<QVector2D> &texCoords,
+    const QVector<int> &polygonsTexCoordsIndices,
+    const QVector<int> &polygonsStart,
+    const QImage &texture,
+    const QVector3D &lightDirection,
+    const QMatrix4x4 &MVP,
+    const QColor &modelColor = Qt::white);
+
 QImage render(
     const QVector<QVector3D> &vertices,
-    const QVector<QVector<int>> &polygonsVerticesIndices,
+    const QVector<int> &polygonsVerticesIndices,
     const QVector<QVector2D> &texCoords,
-    const QVector<QVector<int>> &polygonsTexCoordsIndices,
+    const QVector<int> &polygonsTexCoordsIndices,
+    const QVector<int> &polygonsStart,
     const QImage &texture,
     const QVector3D &lightDirection,
     const QMatrix4x4 &MVP,

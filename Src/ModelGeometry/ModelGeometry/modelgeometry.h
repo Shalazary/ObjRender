@@ -8,13 +8,19 @@
 class ModelGeometry
 {
 public:
-    QVector<QVector3D> m_vertices;
-    QVector<QVector2D> m_texCoords;
-    QVector<QVector3D> m_normals;
+    QVector<QVector3D> polygonVertices(int polygonIndex) const;
+    QVector<QVector2D> polygonTexCoords(int polygonIndex) const;
+    QVector<QVector3D> polygonNormals(int polygonIndex) const;
 
-    QVector<QVector<int>> m_polygonsVerticesIndices;
-    QVector<QVector<int>> m_polygonsTexCoordsIndices;
-    QVector<QVector<int>> m_polygonsNormalsIndices;
+    QVector<QVector3D> vertices;
+    QVector<QVector2D> texCoords;
+    QVector<QVector3D> normals;
+
+    QVector<int> polygonsVerticesIndices;
+    QVector<int> polygonsTexCoordsIndices;
+    QVector<int> polygonsNormalsIndices;
+
+    QVector<int> polygonsStarts;
 };
 
 bool operator ==(const ModelGeometry &m1, const ModelGeometry &m2);

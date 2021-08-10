@@ -1,7 +1,8 @@
 #include "barycentric_coordinates_tools_tests.h"
-#include "BarycentricCoordinatesTools/barycentric_coordinates_tools.h"
 
 #include <QVector3D>
+
+#include "BarycentricCoordinatesTools/barycentric_coordinates_tools.h"
 
 void BarycentricCoordinatesToolsTests::toBaricentric_test01()
 {
@@ -73,7 +74,6 @@ void BarycentricCoordinatesToolsTests::toBaricentric_test04()
     const QVector2D p = {0.25f, 0.75f};
 
     const QVector3D actual = BarycentricCoordinatesTools::toBarycentric(a, b, c, p);
-
 
     QVERIFY(qFuzzyCompare(p, actual[2] * a + actual[0] * b + actual[1] * c));
 }

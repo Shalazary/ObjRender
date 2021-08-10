@@ -1,7 +1,6 @@
 #include "camera.h"
+
 #include "HomogeneousCoordinatesTools/homogeneouscoordinatestools.h"
-
-
 
 Camera::Camera(CameraMode mode) : m_mode(mode)
 {
@@ -10,29 +9,27 @@ Camera::Camera(CameraMode mode) : m_mode(mode)
 
 QMatrix4x4 Camera::projection() const
 {
+    QMatrix4x4 projectionMatrix;
+
     if(m_mode == CameraMode::Orthographic)
-        return HomogeneousCoordinatesTools::orthographic(m_left, m_right, m_bottom, m_top, m_near, m_far);
+        projectionMatrix.ortho(m_left, m_right, m_bottom, m_top, m_near, m_far);
     else if(m_mode == CameraMode::Perspective)
-        return HomogeneousCoordinatesTools::perspective(m_fov, m_aspectRatio, m_near, m_far);
+        projectionMatrix.perspective(m_fov, m_aspectRatio, m_near, m_far);
     else if(m_mode == CameraMode::Frustum)
-        return HomogeneousCoordinatesTools::frustum(m_left, m_right, m_bottom, m_top, m_near, m_far);
-    else
-        return QMatrix4x4();
+        projectionMatrix.frustum(m_left, m_right, m_bottom, m_top, m_near, m_far);
+
+    return projectionMatrix;
 }
 
 QMatrix4x4 Camera::view() const
 {
-    QMatrix4x4 originTranslation;
-    QMatrix4x4 rotation;
-    QMatrix4x4 targetTranslation;
-    originTranslation.translate(m_origin);
-    rotation.rotate(m_rotation);
-    targetTranslation.translate(m_target);
+    QMatrix4x4 transform;
 
-    QVector3D pos = QVector4D(targetTranslation * rotation * originTranslation * QVector4D(0, 0, 0, 1)).toVector3DAffine();
-    QVector3D target = QVector4D(targetTranslation * QVector4D(0, 0, 0, 1)).toVector3DAffine();
+    transform.translate(m_target);
+    transform.rotate(m_rotation);
+    transform.translate(m_origin);
 
-    return HomogeneousCoordinatesTools::lookAt(pos, target, m_up);
+    return transform.inverted();
 }
 
 QVector3D Camera::origin() const
@@ -112,7 +109,7 @@ float Camera::fov() const
 
 void Camera::setFov(float fovAngle)
 {
-    m_fov = (2 * M_PI * fovAngle) / 360.0f;
+    m_fov = fovAngle;
 }
 
 float Camera::aspectRatio() const

@@ -1,9 +1,8 @@
 #include "image_tools_test.h"
 
-#include "ImageTools/image_tools.h"
-
 #include <QVector2D>
 
+#include "ImageTools/image_tools.h"
 
 void ImageToolsTest::initTestCase()
 {

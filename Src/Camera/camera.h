@@ -53,9 +53,6 @@ public:
 private:
     CameraMode m_mode = CameraMode::Perspective;
 
-    QVector3D m_pos = {0, 0, 0};
-    QVector3D m_up = {0, 1, 0};
-
     QVector3D m_origin = {0, 0, 20};
     QQuaternion m_rotation = {0, 0, 0, 0};
     QVector3D m_target = {0, 0, 0};

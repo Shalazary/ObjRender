@@ -7,7 +7,11 @@
 namespace ModelGeometryUtils {
 
 QVector<QVector<int>> triangulate(const QVector<int> &polygonIndices);
-QVector3D calculateNormal(int vertexIndex, const QVector<QVector3D> &vertices, const QVector<QVector<int>> &polygonsVerticesIndices);
+QVector3D calculateNormal(
+    int vertexIndex,
+    const QVector<QVector3D> &vertices,
+    const QVector<int> &polygonsVerticesIndices,
+    const QVector<int> &polygonsStarts);
 }
 
 #endif

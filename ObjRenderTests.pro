@@ -5,10 +5,7 @@ CONFIG += c++17 object_parallel_to_source no_batch
 DEFINES += QT_DEPRECATED_WARNINGS
 
 include(Tests/ObjReadingToolsTests/ObjReadingToolsTests.pri)
-include(Tests/DrawingToolsTests/DrawingToolsTests.pri)
-include(Tests/WorldCoordsToolsTests/WorldCoordsToolsTests.pri)
 include(Tests/HomogeneousCoordinatesToolsTests/HomogeneousCoordinatesToolsTests.pri)
-#include(Tests/CameraTests/CameraTests.pri)
 include(Tests/BarycentricCoordinatesToolsTests/BarycentricCoordinatesToolsTests.pri)
 include(Tests/ModelGeometryUtilsTests/ModelGeometryUtilsTests.pri)
 include(Tests/ImageToolsTests/ImageToolsTests.pri)

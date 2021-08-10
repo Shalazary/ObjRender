@@ -1,7 +1,7 @@
 #include "drawingtools.h"
+
 #include "HomogeneousCoordinatesTools/homogeneouscoordinatestools.h"
 #include "BarycentricCoordinatesTools/barycentric_coordinates_tools.h"
-#include "WorldCoordsTools/worldcoordstools.h"
 #include "ImageTools/image_tools.h"
 
 int max(int a, int b, int c)
@@ -24,9 +24,9 @@ int min(int a, int b, int c)
 
 void DrawingTools::drawLine(QImage &image, int x1, int y1, int z1, int x2, int y2, int z2, int **zbuffer, QColor color)
 {
-    int dx = x2 - x1;
-    int dy = y2 - y1;
-    int dz = z2 - z1;
+    const int dx = x2 - x1;
+    const int dy = y2 - y1;
+    const int dz = z2 - z1;
 
     float a = 0;
     float b = 0;
@@ -71,8 +71,8 @@ void DrawingTools::drawLine(QImage &image, int x1, int y1, int z1, int x2, int y
 
 void DrawingTools::drawLine(QImage &image, int x1, int y1, int x2, int y2, QColor color)
 {
-    int dx = x2 - x1;
-    int dy = y2 - y1;
+    const int dx = x2 - x1;
+    const int dy = y2 - y1;
 
     float a = 0;
     if(std::abs(dx) > std::abs(dy)) {
@@ -104,12 +104,6 @@ void DrawingTools::drawLine(QImage &image, QPoint p1, QPoint p2, QColor color) {
     DrawingTools::drawLine(image, p1.x(), p1.y(), p2.x(), p2.y(), color);
 }
 
-
-void DrawingTools::drawLine(QImage &image, Point3D p1, Point3D p2, int **zbuffer, QColor color)
-{
-    drawLine(image, p1.x(), p1.y(), p1.z(), p2.x(), p2.y(), p2.z(), zbuffer, color);
-}
-
 void DrawingTools::drawTriangel(
     QImage &image,
     const QVector4D &v1, const QVector4D &v2, const QVector4D &v3,
@@ -124,24 +118,24 @@ void DrawingTools::drawTriangel(
     const QVector3D p2 = v2.toVector3DAffine();
     const QVector3D p3 = v3.toVector3DAffine();
 
-    QVector2D ps1 = HomogeneousCoordinatesTools::projectToScreenPixelCoordinates(p1, image.size());
-    QVector2D ps2 = HomogeneousCoordinatesTools::projectToScreenPixelCoordinates(p2, image.size());
-    QVector2D ps3 = HomogeneousCoordinatesTools::projectToScreenPixelCoordinates(p3, image.size());
+    const QVector2D ps1 = HomogeneousCoordinatesTools::projectToScreenPixelCoordinates(p1, image.size());
+    const QVector2D ps2 = HomogeneousCoordinatesTools::projectToScreenPixelCoordinates(p2, image.size());
+    const QVector2D ps3 = HomogeneousCoordinatesTools::projectToScreenPixelCoordinates(p3, image.size());
 
-    int maxX = max(ps1.x(), ps2.x(), ps3.x());
-    int minX = min(ps1.x(), ps2.x(), ps3.x());
-    int maxY = max(ps1.y(), ps2.y(), ps3.y());
-    int minY = min(ps1.y(), ps2.y(), ps3.y());
+    const int maxX = max(ps1.x(), ps2.x(), ps3.x());
+    const int minX = min(ps1.x(), ps2.x(), ps3.x());
+    const int maxY = max(ps1.y(), ps2.y(), ps3.y());
+    const int minY = min(ps1.y(), ps2.y(), ps3.y());
 
     for(int y = minY; y <= maxY; ++y)
         for(int x = minX; x <= maxX; ++x) {
-            QVector2D p = {x, y};
-            QVector3D b = BarycentricCoordinatesTools::toBarycentric(ps1, ps2, ps3, p);
+            const QVector2D p = {x, y};
+            const QVector3D b = BarycentricCoordinatesTools::toBarycentric(ps1, ps2, ps3, p);
 
-            float z = b[2] * p1.z() + b[0] * p2.z() + b[1] * p3.z();
+            const float z = b[2] * p1.z() + b[0] * p2.z() + b[1] * p3.z();
 
-            QVector2D t = b[2] * vt1 + b[0] * vt2 + b[1] * vt3;
-            QVector2D ts = HomogeneousCoordinatesTools::projectToTexturePixelCoordinates(t, texture.size());
+            const QVector2D t = b[2] * vt1 + b[0] * vt2 + b[1] * vt3;
+            const QVector2D ts = HomogeneousCoordinatesTools::projectToTexturePixelCoordinates(t, texture.size());
 
             float intensity = 1;
             if(!lightDirection.isNull()) {
@@ -153,10 +147,11 @@ void DrawingTools::drawTriangel(
                (b[1] < 1.0f || qFuzzyCompare(b[1], 1.0f)) && (b[1] > 0.0f || qFuzzyIsNull(b[1])) &&
                (b[2] < 1.0f || qFuzzyCompare(b[2], 1.0f)) && (b[2] > 0.0f || qFuzzyIsNull(b[2])) &&
                z <= zbuffer[x][y] &&
-               intensity > 0) {
+               intensity > 0)
+            {
                 zbuffer[x][y] = z;
-                QColor origColor = ImageTools::getPixelColor(texture, ts, ImageTools::InterpolationType::Bilinear);
-                QColor mixedColor = QColor(origColor.red() * intensity, origColor.green() * intensity, origColor.blue() * intensity, origColor.alpha());
+                const QColor origColor = ImageTools::getPixelColor(texture, ts, ImageTools::InterpolationType::Bilinear);
+                const QColor mixedColor = QColor(origColor.red() * intensity, origColor.green() * intensity, origColor.blue() * intensity, origColor.alpha());
                 image.setPixelColor(x, y, mixedColor);
             }
         }

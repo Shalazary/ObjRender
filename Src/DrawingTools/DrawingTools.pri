@@ -3,11 +3,11 @@ CONFIG += DRAWING_TOOLS_PRI
 
 INCLUDEPATH *= $$clean_path($$PWD/../)
 
-include(../HomogeneousCoordinatesTools/HomogeneousCoordinatesTools.pri)
-include(../BarycentricCoordinatesTools/BarycentricCoordinatesTools.pri)
-include(../Point3D/Point3D.pri)
-include(../WorldCoordsTools/WorldCoordsTools.pri)
-include(../ImageTools/ImageTools.pri)
+include($$PWD/../HomogeneousCoordinatesTools/HomogeneousCoordinatesTools.pri)
+include($$PWD/../BarycentricCoordinatesTools/BarycentricCoordinatesTools.pri)
+include($$PWD/../Point3D/Point3D.pri)
+include($$PWD/../WorldCoordsTools/WorldCoordsTools.pri)
+include($$PWD/../ImageTools/ImageTools.pri)
 
 SOURCES += \
     $$PWD/drawingtools.cpp

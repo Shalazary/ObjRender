@@ -23,9 +23,9 @@ int main()
     camera.setFar(1000);
     camera.setFov(35.0f);
     camera.setAspectRatio(1);
-    camera.setOrigin(0, 0, 102.4254379272461);
+    camera.setOrigin(0, 0, 60.541831970214844);
     camera.setRotation(0.8811194896697998, -0.27781587839126587, 0.3649716377258301, 0.11507517099380493);
-    camera.setTarget(0, 0, 0);
+    camera.setTarget(0.30249977111816406, 13.801307678222656, -1.6725749969482422);
 
     Viewport viewport(&camera);
     viewport.setWidth(4096);
@@ -58,8 +58,6 @@ int main()
 
     viewport.addObject(&model);
     viewport.render().save("res.jpg");
-
-    RenderTools::render(geometry, camera, {0, 0, -1}).save("static.jpg");
 
     return 0;
 }

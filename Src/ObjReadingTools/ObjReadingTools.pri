@@ -3,7 +3,7 @@ CONFIG += OBJ_READING_TOOLS_PRI
 
 INCLUDEPATH *= $$clean_path($$PWD/../)
 
-include(../ModelGeometry/ModelGeometry/ModelGeometry.pri)
+include($$PWD/../ModelGeometry/ModelGeometry/ModelGeometry.pri)
 
 SOURCES += \
     $$PWD/objreadingtools.cpp

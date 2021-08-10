@@ -7,7 +7,7 @@
 
 bool ObjReadingTools::Utils::parseVertex(const QString &body, QVector3D &vertex, QString &errMsg)
 {
-    QStringList blocks = body.split(" ", QString::SkipEmptyParts);
+    const QStringList blocks = body.split(" ", QString::SkipEmptyParts);
 
     if(blocks.length() != 3){
         errMsg = QString("Invalid number of vertex coordinates. Expected 3. Actual received %1").arg(blocks.length());
@@ -28,7 +28,7 @@ bool ObjReadingTools::Utils::parseVertex(const QString &body, QVector3D &vertex,
 
 bool ObjReadingTools::Utils::parseTexCoord(const QString &body, QVector2D &texCoord, QString &errMsg)
 {
-    QStringList blocks = body.split(" ", QString::SkipEmptyParts);
+    const QStringList blocks = body.split(" ", QString::SkipEmptyParts);
 
     if(!(blocks.length() == 2 || blocks.length() == 3)){
         errMsg = QString("Invalid number of texture coordinates. Expected 2 or 3. Actual received %1").arg(blocks.length());
@@ -49,7 +49,7 @@ bool ObjReadingTools::Utils::parseTexCoord(const QString &body, QVector2D &texCo
 
 bool ObjReadingTools::Utils::parseNormal(const QString &body, QVector3D &normal, QString &errMsg)
 {
-    QStringList blocks = body.split(" ", QString::SkipEmptyParts);
+    const QStringList blocks = body.split(" ", QString::SkipEmptyParts);
 
     if(blocks.length() != 3){
         errMsg = QString("Invalid number of normals coordinates. Expected 3. Actual received %1").arg(blocks.length());
@@ -74,8 +74,8 @@ bool ObjReadingTools::Utils::parseFace(const QString &body, QVector<int> &vertic
     texCodsInd.clear();
     normalsInd.clear();
 
-    QStringList blocks = body.split(" ", QString::SkipEmptyParts);
-    int nBlocks = blocks.length();
+    const QStringList blocks = body.split(" ", QString::SkipEmptyParts);
+    const int nBlocks = blocks.length();
 
     if (nBlocks < 3) {
         errMsg = QString("Face should contains 3 or more vertices. Actual received %1").arg(nBlocks);
@@ -84,7 +84,7 @@ bool ObjReadingTools::Utils::parseFace(const QString &body, QVector<int> &vertic
 
     for(int i = 0; i < nBlocks; ++i){
         QString currentBlock = blocks[i];
-        int nSlash = currentBlock.count("/");
+        const int nSlash = currentBlock.count("/");
 
         if(nSlash > 2 || currentBlock.startsWith('/') || currentBlock.endsWith('/')){
             errMsg = QString("Vertex format should be v, v/vt, v//vn or v/vt/vn. Now block contains %1. Block number %2").arg(currentBlock).arg(i + 1);
@@ -97,13 +97,13 @@ bool ObjReadingTools::Utils::parseFace(const QString &body, QVector<int> &vertic
         } else if (nSlash == 1) {
             currentBlock += "/0";
         } else {
-            int firstSlashInd = currentBlock.indexOf("/");
-            int secondSlashInd = currentBlock.lastIndexOf("/");
+            const int firstSlashInd = currentBlock.indexOf("/");
+            const int secondSlashInd = currentBlock.lastIndexOf("/");
             if(secondSlashInd - firstSlashInd == 1)
                 currentBlock.insert(firstSlashInd + 1, "0");
         }
 
-        QStringList inds = currentBlock.split("/", QString::SkipEmptyParts);
+        const QStringList inds = currentBlock.split("/", QString::SkipEmptyParts);
 
         bool ok = true;
         int vInd = 0;
@@ -140,22 +140,47 @@ bool ObjReadingTools::Utils::parseFace(const QString &body, QVector<int> &vertic
 bool ObjReadingTools::readModelGeometry(QTextStream &stream, ModelGeometry &model, QString &errMsg)
 {
     int lineInd = 0;
+
+    int nVertices = 0;
+    int nTexCoords = 0;
+    int nNormals = 0;
+    int nPolygons = 0;
+    int nVerticesInPolygons = 0;
+
+    model.vertices.clear();
+    model.texCoords.clear();
+    model.normals.clear();
+    model.polygonsVerticesIndices.clear();
+    model.polygonsTexCoordsIndices.clear();
+    model.polygonsNormalsIndices.clear();
+    model.polygonsStarts.clear();
+
+    Utils::getObjInfo(stream, nVertices, nTexCoords, nNormals, nPolygons, nVerticesInPolygons);
+
+    model.vertices.reserve(nVertices);
+    model.texCoords.reserve(nTexCoords);
+    model.normals.reserve(nNormals);
+    model.polygonsVerticesIndices.reserve(nVerticesInPolygons);
+    model.polygonsTexCoordsIndices.reserve(nVerticesInPolygons);
+    model.polygonsNormalsIndices.reserve(nVerticesInPolygons);
+    model.polygonsStarts.reserve(nPolygons);
+
+    stream.seek(0);
+
     while(!stream.atEnd()){
         ++lineInd;
-        QString line = stream.readLine().simplified();
+        const QString line = stream.readLine().simplified();
 
-        if(line.isEmpty() || line.startsWith("#"))
+        if(line.isEmpty() || line.startsWith('#'))
             continue;
 
-        int firstSpaceInd = line.indexOf(" ");
+        QString token;
+        QString body;
 
-        if(firstSpaceInd == 0) {
-            errMsg = QString("Invalid format in line %1").arg(lineInd);
+        if(!Utils::parseTokenAndBody(line, token, body, errMsg)) {
+            errMsg = QString("Line %1. ").arg(lineInd) + errMsg;
             return false;
         }
-
-        QString token = line.left(firstSpaceInd);
-        QString body = line.mid(firstSpaceInd + 1);
 
         if(token == "v") {
             QVector3D vertex;
@@ -163,21 +188,21 @@ bool ObjReadingTools::readModelGeometry(QTextStream &stream, ModelGeometry &mode
                 errMsg = QString("Line %1. ").arg(lineInd) + errMsg;
                 return false;
             }
-            model.m_vertices.append(vertex);
+            model.vertices.append(vertex);
         } else if (token == "vt") {
             QVector2D texCoord;
             if(!ObjReadingTools::Utils::parseTexCoord(body, texCoord, errMsg)) {
                 errMsg = QString("Line %1. ").arg(lineInd) + errMsg;
                 return false;
             }
-            model.m_texCoords.append(texCoord);
+            model.texCoords.append(texCoord);
         } else if (token == "vn") {
             QVector3D normal;
             if(!ObjReadingTools::Utils::parseNormal(body, normal, errMsg)){
                 errMsg = QString("Line %1. ").arg(lineInd) + errMsg;
                 return false;
             }
-            model.m_normals.append(normal);
+            model.normals.append(normal);
         } else if (token == "f") {
             QVector<int> vericesInd;
             QVector<int> texCoordsInd;
@@ -186,11 +211,12 @@ bool ObjReadingTools::readModelGeometry(QTextStream &stream, ModelGeometry &mode
                 errMsg = QString("Line %1. ").arg(lineInd) + errMsg;
                 return false;
             }
-            model.m_polygonsVerticesIndices.append(vericesInd);
-            model.m_polygonsTexCoordsIndices.append(texCoordsInd);
-            model.m_polygonsNormalsIndices.append(normalsInd);
+            model.polygonsStarts.append(model.polygonsVerticesIndices.size());
+            model.polygonsVerticesIndices.append(vericesInd);
+            model.polygonsTexCoordsIndices.append(texCoordsInd);
+            model.polygonsNormalsIndices.append(normalsInd);
         } else if (token == "l") {
-            // line specification
+            // Line specification
         } else if (token == "g") {
             // Group specification
         } else {
@@ -199,7 +225,60 @@ bool ObjReadingTools::readModelGeometry(QTextStream &stream, ModelGeometry &mode
         }
     }
 
+    model.polygonsStarts.append(model.polygonsVerticesIndices.size());
+
     return true;
 }
 
 
+
+bool ObjReadingTools::Utils::parseTokenAndBody(const QString &line, QString &token, QString &body, QString &errMsg)
+{
+    const int firstSpaceInd = line.indexOf(" ");
+
+    if(firstSpaceInd == 0 || firstSpaceInd == -1) {
+        errMsg = QString("Invalid line format");
+        return false;
+    }
+
+    token = line.left(firstSpaceInd);
+    body = line.mid(firstSpaceInd + 1);
+
+    return true;
+}
+
+void ObjReadingTools::Utils::getObjInfo(
+    QTextStream &stream,
+    int &nVertices,
+    int &nTexCoords,
+    int &nNormals,
+    int &nPolygons,
+    int &nVerticesInPolygons)
+{
+    nVertices = 0;
+    nTexCoords = 0;
+    nNormals = 0;
+    nPolygons = 0;
+    nVerticesInPolygons = 0;
+
+    while (!stream.atEnd()) {
+        const QString line = stream.readLine().simplified();
+
+        QString token;
+        QString body;
+
+        QString errMsg;
+
+        Utils::parseTokenAndBody(line, token, body, errMsg);
+        if(token == "v")
+            ++nVertices;
+        else if(token == "vt")
+            ++nTexCoords;
+        else if(token == "vn")
+            ++nNormals;
+        else if(token == "f") {
+            ++nPolygons;
+            nVerticesInPolygons += body.split(" ", QString::SkipEmptyParts).size();
+        }
+    }
+}

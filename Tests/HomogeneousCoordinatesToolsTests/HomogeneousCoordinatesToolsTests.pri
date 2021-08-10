@@ -4,7 +4,7 @@ DEFINES += HOMOGENEOUS_COORDINATES_TOOLS_TESTS_PRI
 
 INCLUDEPATH *= $$clean_path($$PWD/../)
 
-include(../../Src/HomogeneousCoordinatesTools/HomogeneousCoordinatesTools.pri)
+include($$PWD/../../Src/HomogeneousCoordinatesTools/HomogeneousCoordinatesTools.pri)
 
 SOURCES += \
     $$PWD/homogeneouscoordinatestoolstests.cpp

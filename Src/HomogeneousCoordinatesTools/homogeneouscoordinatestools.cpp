@@ -4,17 +4,17 @@
 
 QMatrix4x4 HomogeneousCoordinatesTools::lookAt(const QVector3D &eye, const QVector3D &center, const QVector3D &up)
 {
-    QVector3D forward = (eye - center).normalized();
-    QVector3D right = QVector3D::normal(up, forward);
-    QVector3D realUp = QVector3D::normal(forward, right);
+    const QVector3D forward = (eye - center).normalized();
+    const QVector3D right = QVector3D::normal(up, forward);
+    const QVector3D realUp = QVector3D::normal(forward, right);
 
-    QMatrix4x4 rotation(
+    const QMatrix4x4 rotation(
           right.x(),   right.y(),   right.z(), 0.0f,
          realUp.x(),  realUp.y(),  realUp.z(), 0.0f,
         forward.x(), forward.y(), forward.z(), 0.0f,
                0.0f,        0.0f,        0.0f, 1.0f);
 
-    QMatrix4x4 translation(
+    const QMatrix4x4 translation(
         1.0f, 0.0f, 0.0f, -eye.x(),
         0.0f, 1.0f, 0.0f, -eye.y(),
         0.0f, 0.0f, 1.0f, -eye.z(),
@@ -34,8 +34,8 @@ QMatrix4x4 HomogeneousCoordinatesTools::frustum(float left, float right, float b
 
 QMatrix4x4 HomogeneousCoordinatesTools::perspective(float fov, float aspectRatio, float near, float far)
 {
-    double right = qTan(fov / 2) * near;
-    double top = right / aspectRatio;
+    const double right = qTan(fov / 2) * near;
+    const double top = right / aspectRatio;
 
     return QMatrix4x4(
         near / right,       0.0f,                         0.0f,                            0.0f,
@@ -86,7 +86,7 @@ QVector2D HomogeneousCoordinatesTools::projectToScreenPixelCoordinates(const QVe
 
 QVector2D HomogeneousCoordinatesTools::projectToTexturePixelCoordinates(const QVector2D &texCoord, int width, int height)
 {
-    return QVector2D(texCoord.x() * (width - 1.0f), -texCoord.y() * (height - 1.0f) + (height - 1.0f));
+    return QVector2D(texCoord.x() * width - 0.5f, (1.0f - texCoord.y()) * height - 0.5f);
 }
 
 QVector2D HomogeneousCoordinatesTools::projectToTexturePixelCoordinates(const QVector2D &texCoord, const QSize &size)

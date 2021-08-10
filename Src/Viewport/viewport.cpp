@@ -27,8 +27,8 @@ QImage Viewport::render() const
     QImage image(m_width, m_hight, QImage::Format_RGB32);
     image.fill(backgroundColor);
 
-    QMatrix4x4 view = m_camera->view();
-    QMatrix4x4 projection = m_camera->projection();
+    const QMatrix4x4 view = m_camera->view();
+    const QMatrix4x4 projection = m_camera->projection();
 
     float **zbuffer = new float * [m_hight];
     zbuffer[0] = new float [m_hight * m_width];
@@ -41,6 +41,9 @@ QImage Viewport::render() const
 
     for(DrawableObject *object : m_objects)
         object->draw(view, projection, image, zbuffer);
+
+    delete[] zbuffer[0];
+    delete[] zbuffer;
 
     return image;
 }

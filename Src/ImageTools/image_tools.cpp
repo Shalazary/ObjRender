@@ -1,4 +1,5 @@
 #include "image_tools.h"
+
 #include <cmath>
 
 QColor ImageTools::getPixelColor(const QImage &image, float x, float y, const ImageTools::InterpolationType &type)

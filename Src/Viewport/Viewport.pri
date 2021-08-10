@@ -3,8 +3,8 @@ CONFIG += VIEWPORT
 
 INCLUDEPATH *= $$clean_path($$PWD/../)
 
-include(../DrawableObject/DrawableObject.pri)
-include(../Camera/Camera.pri)
+include($$PWD/../DrawableObject/DrawableObject.pri)
+include($$PWD/../Camera/Camera.pri)
 
 SOURCES += \
     $$PWD/viewport.cpp

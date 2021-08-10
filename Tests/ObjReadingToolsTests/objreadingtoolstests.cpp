@@ -1,10 +1,10 @@
 #include "objreadingtoolstests.h"
-#include "ObjReadingTools/objreadingtools.h"
 
 #include <QVector3D>
 #include <QString>
 #include <QTextStream>
 
+#include "ObjReadingTools/objreadingtools.h"
 
 void ObjredingToolsTests::parseVertex_validData_test01()
 {
@@ -581,24 +581,16 @@ void ObjredingToolsTests::readModel_validData_test01()
     ObjReadingTools::readModelGeometry(stream, actual, errMsg);
 
     ModelGeometry expected;
-    expected.m_vertices = {
+    expected.vertices = {
         {-1, 1, 0},
         {1, 1, 0},
         {1, -1, 0},
         {-1, -1, 0}
     };
-    expected.m_polygonsVerticesIndices = {
-        {1, 2, 3},
-        {1, 3, 4}
-    };
-    expected.m_polygonsTexCoordsIndices = {
-        {0, 0, 0},
-        {0, 0, 0}
-    };
-    expected.m_polygonsNormalsIndices = {
-        {0, 0, 0},
-        {0, 0, 0}
-    };
+    expected.polygonsVerticesIndices = {1, 2, 3, 1, 3, 4};
+    expected.polygonsTexCoordsIndices = {0, 0, 0, 0, 0, 0};
+    expected.polygonsNormalsIndices = {0, 0, 0, 0, 0, 0};
+    expected.polygonsStarts = {0, 3, 6};
 
     QCOMPARE(actual, expected);
 }
@@ -624,30 +616,22 @@ void ObjredingToolsTests::readModel_validData_test02()
     ObjReadingTools::readModelGeometry(stream, actual, errMsg);
 
     ModelGeometry expected;
-    expected.m_vertices = {
+    expected.vertices = {
         {-1, 1, 0},
         {1, 1, 0},
         {1, -1, 0},
         {-1, -1, 0}
     };
-    expected.m_texCoords = {
+    expected.texCoords = {
         {0, 1},
         {1, 1},
         {1, 0},
         {0, 0}
     };
-    expected.m_polygonsVerticesIndices = {
-        {3, 2, 1},
-        {4, 3, 1}
-    };
-    expected.m_polygonsTexCoordsIndices = {
-        {3, 2, 1},
-        {4, 3, 1}
-    };
-    expected.m_polygonsNormalsIndices = {
-        {0, 0, 0},
-        {0, 0, 0}
-    };
+    expected.polygonsVerticesIndices = {3, 2, 1, 4, 3, 1};
+    expected.polygonsTexCoordsIndices = {3, 2, 1, 4, 3, 1};
+    expected.polygonsNormalsIndices = {0, 0, 0, 0, 0, 0};
+    expected.polygonsStarts = {0, 3, 6};
 
     QCOMPARE(actual, expected);
 }
