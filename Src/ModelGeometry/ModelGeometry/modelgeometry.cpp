@@ -54,6 +54,7 @@ void ModelGeometry::ModelGeometry::clear()
 
 void ModelGeometry::ModelGeometry::triangulate()
 {
+    m_nTrianles = 0;
     for(int polygonNumber = 0; polygonNumber < polygonsStarts.size() - 1; ++polygonNumber) {
         int polygonSize = polygonsStarts[polygonNumber + 1] - polygonsStarts[polygonNumber];
         int polygonStartInd = polygonsStarts[polygonNumber];

@@ -33,7 +33,10 @@ public:
 
     Array2D(const Array2D &other)
     {
-        *this = Array2D(other.nRows(), other.nColumns());
+        m_array2d = new T *[other.nRows()];
+        m_array2d[0] = new T [other.nRows() * other.nColumns()];
+        for(int i = 1; i < other.nRows(); ++i)
+            m_array2d[i] = m_array2d[i - 1] + other.nColumns();
 
         for(int i = 0; i < m_nRows; ++i)
             for(int j = 0; j < m_nColumns; ++j)
