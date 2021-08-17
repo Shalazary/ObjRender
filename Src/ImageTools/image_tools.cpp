@@ -2,16 +2,19 @@
 
 #include <cmath>
 
-QColor ImageTools::getPixelColor(const QImage &image, float x, float y, const ImageTools::InterpolationType &type)
+QColor ImageTools::getPixelColor(const QImage &image, float x, float y, ImageTools::InterpolationType type)
 {
     if(type == InterpolationType::Nearest)
         return getPixelColorNearest(image, x, y);
 
     if(type == InterpolationType::Bilinear)
         return getPixelColorBilinear(image, x, y);
+
+    Q_ASSERT_X(false, "getPixelColor", "unknown interpolation type");
+    return QColor();
 }
 
-QColor ImageTools::getPixelColor(const QImage &image, const QVector2D &p, const ImageTools::InterpolationType &type)
+QColor ImageTools::getPixelColor(const QImage &image, const QVector2D &p, ImageTools::InterpolationType type)
 {
     return getPixelColor(image, p.x(), p.y(), type);
 }

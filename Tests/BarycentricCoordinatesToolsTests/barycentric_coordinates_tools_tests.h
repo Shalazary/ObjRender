@@ -11,6 +11,7 @@ private slots:
     void toBaricentric_test02();
     void toBaricentric_test03();
     void toBaricentric_test04();
+    void toBaricentric_test05();
 };
 
 #endif

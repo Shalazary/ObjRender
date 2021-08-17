@@ -11,7 +11,7 @@
 
 namespace ObjReadingTools {
 
-bool readModelGeometry(QTextStream &stream, ModelGeometry &model, QString &errMsg);
+bool readModelGeometry(QTextStream &stream, ModelGeometry::ModelGeometry &model, QString &errMsg);
 
 namespace Utils {
 

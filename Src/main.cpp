@@ -14,11 +14,11 @@
 
 int main()
 {
-    QString objFilename = "../ObjRender/obj/NeutralWrapped.obj";
-    QString textureFilename = "../ObjRender/obj/NeutralWrapped.jpg";
+    QString objFilename = "../obj/NeutralWrapped.obj";
+    QString textureFilename = "../texture/NeutralWrapped.jpg";
 
     QString errMsg;
-    Camera camera(CameraMode::Perspective);
+    Camera::Camera camera(Camera::Mode::Perspective);
     camera.setNear(1);
     camera.setFar(1000);
     camera.setFov(35.0f);
@@ -27,12 +27,12 @@ int main()
     camera.setRotation(0.8811194896697998, -0.27781587839126587, 0.3649716377258301, 0.11507517099380493);
     camera.setTarget(0.30249977111816406, 13.801307678222656, -1.6725749969482422);
 
-    Viewport viewport(&camera);
+    Viewport::Viewport viewport(&camera);
     viewport.setWidth(4096);
     viewport.setHight(4096);
     viewport.setBackgroundColor(Qt::black);
 
-    ModelGeometry geometry;
+    ModelGeometry::ModelGeometry geometry;
     QFile file(objFilename);
     if(!file.open(QFile::ReadOnly)){
         qDebug() << "Fail to load obj" << objFilename << "not found";
@@ -43,6 +43,8 @@ int main()
         qDebug() << errMsg << '\n';
         return -1;
     }
+    geometry.triangulate();
+    geometry.recomputeNormals();
 
     QImage texture;
     if(!texture.load(textureFilename)){
@@ -50,10 +52,10 @@ int main()
         return -1;
     }
 
-    DrawableModel model;
+    DrawableModel::DrawableModel model;
     model.setGeometry(geometry);
     model.setTexture(texture);
-    model.useLight = false;
+    model.useLight = true;
     model.useTexture = true;
 
     viewport.addObject(&model);

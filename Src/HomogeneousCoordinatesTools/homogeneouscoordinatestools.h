@@ -18,6 +18,9 @@ QMatrix4x4 viewport(int width, int height);
 QVector2D projectToScreenPixelCoordinates(const QVector4D &NDCCoord, int width, int height);
 QVector2D projectToScreenPixelCoordinates(const QVector4D &NDCCoord, const QSize &size);
 
+QVector2D unprojectToWorldFromPixelCoords(const QVector2D &pixelCoords, int width, int height);
+QVector2D unprojectToWorldFromPixelCoords(const QVector2D &pixelCoords, const QSize &size);
+
 QVector2D projectToTexturePixelCoordinates(const QVector2D &texCoord, int width, int height);
 QVector2D projectToTexturePixelCoordinates(const QVector2D &texCoord, const QSize &size);
 

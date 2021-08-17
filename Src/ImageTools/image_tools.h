@@ -12,9 +12,8 @@ enum class InterpolationType {
     Bilinear
 };
 
-//! REVIEW: no & for enum
-QColor getPixelColor(const QImage &image, float x, float y, const InterpolationType &type = InterpolationType::Nearest);
-QColor getPixelColor(const QImage &image, const QVector2D &p, const InterpolationType &type = InterpolationType::Nearest);
+QColor getPixelColor(const QImage &image, float x, float y, InterpolationType type = InterpolationType::Nearest);
+QColor getPixelColor(const QImage &image, const QVector2D &p, InterpolationType type = InterpolationType::Nearest);
 
 QColor getPixelColorNearest(const QImage &image, float x, float y);
 QColor getPixelColorNearest(const QImage &image, const QVector2D &p);

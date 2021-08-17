@@ -5,7 +5,9 @@
 #include <QtMath>
 #include <QMatrix4x4>
 
-enum class CameraMode
+namespace Camera {
+
+enum class Mode
 {
     Orthographic,
     Perspective,
@@ -16,13 +18,13 @@ class Camera
 {
 public:
     Camera() = default;
-    Camera(CameraMode mode);
+    Camera(Mode mode);
 
     QMatrix4x4 view() const;
     QMatrix4x4 projection() const;
 
-    CameraMode mode() const;
-    void setMode(const CameraMode &mode);
+    Mode mode() const;
+    void setMode(const Mode &mode);
 
     QVector3D origin() const;
     void setOrigin(const QVector3D &origin);
@@ -51,7 +53,7 @@ public:
     void setRotation(float scalar, float x, float y, float z);
 
 private:
-    CameraMode m_mode = CameraMode::Perspective;
+    Mode m_mode = Mode::Perspective;
 
     QVector3D m_origin = {0, 0, 20};
     QQuaternion m_rotation = {0, 0, 0, 0};
@@ -67,5 +69,7 @@ private:
     float m_fov = M_PI / 6.0f;
     float m_aspectRatio = 16.0f / 9.0f;
 };
+
+}
 
 #endif

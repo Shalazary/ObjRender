@@ -3,8 +3,6 @@
 #include <QFile>
 #include <QTextStream>
 
-// TODO Try to reduce repeating
-
 bool ObjReadingTools::Utils::parseVertex(const QString &body, QVector3D &vertex, QString &errMsg)
 {
     const QStringList blocks = body.split(" ", QString::SkipEmptyParts);
@@ -137,35 +135,11 @@ bool ObjReadingTools::Utils::parseFace(const QString &body, QVector<int> &vertic
     return true;
 }
 
-bool ObjReadingTools::readModelGeometry(QTextStream &stream, ModelGeometry &model, QString &errMsg)
+bool ObjReadingTools::readModelGeometry(QTextStream &stream, ModelGeometry::ModelGeometry &model, QString &errMsg)
 {
     int lineInd = 0;
 
-    int nVertices = 0;
-    int nTexCoords = 0;
-    int nNormals = 0;
-    int nPolygons = 0;
-    int nVerticesInPolygons = 0;
-
-    model.vertices.clear();
-    model.texCoords.clear();
-    model.normals.clear();
-    model.polygonsVerticesIndices.clear();
-    model.polygonsTexCoordsIndices.clear();
-    model.polygonsNormalsIndices.clear();
-    model.polygonsStarts.clear();
-
-    Utils::getObjInfo(stream, nVertices, nTexCoords, nNormals, nPolygons, nVerticesInPolygons);
-
-    model.vertices.reserve(nVertices);
-    model.texCoords.reserve(nTexCoords);
-    model.normals.reserve(nNormals);
-    model.polygonsVerticesIndices.reserve(nVerticesInPolygons);
-    model.polygonsTexCoordsIndices.reserve(nVerticesInPolygons);
-    model.polygonsNormalsIndices.reserve(nVerticesInPolygons);
-    model.polygonsStarts.reserve(nPolygons);
-
-    stream.seek(0);
+    model.clear();
 
     while(!stream.atEnd()){
         ++lineInd;
@@ -278,8 +252,7 @@ void ObjReadingTools::Utils::getObjInfo(
             ++nNormals;
         else if(token == "f") {
             ++nPolygons;
-            //! REVIEW: split -> count
-            nVerticesInPolygons += body.split(" ", QString::SkipEmptyParts).size();
+            nVerticesInPolygons += body.count(' ') + 1;
         }
     }
 }

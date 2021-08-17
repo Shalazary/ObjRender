@@ -1,6 +1,8 @@
 #include "modelgeometry.h"
 
-bool operator ==(const ModelGeometry &m1, const ModelGeometry &m2)
+#include "Utils/utils.h"
+
+bool operator ==(const ModelGeometry::ModelGeometry &m1, const ModelGeometry::ModelGeometry &m2)
 {
     return
         m1.vertices == m2.vertices &&
@@ -12,41 +14,80 @@ bool operator ==(const ModelGeometry &m1, const ModelGeometry &m2)
         m1.polygonsStarts == m2.polygonsStarts;
 }
 
-QVector<QVector3D> ModelGeometry::polygonVertices(int polygonIndex) const
+int ModelGeometry::ModelGeometry::nPolygons() const
 {
-    const int polygonSize = polygonsStarts[polygonIndex + 1] - polygonsStarts[polygonIndex];
-    const int startIndex = polygonsStarts[polygonIndex];
-
-    QVector<QVector3D> polygonVertices(polygonSize);
-
-    for(int vertexNumber = 0; vertexNumber < polygonSize; ++vertexNumber)
-        polygonVertices[vertexNumber] = vertices[polygonsVerticesIndices[startIndex + vertexNumber]];
-
-    return polygonVertices;
+    return polygonsStarts.size() - 1;
 }
 
-QVector<QVector2D> ModelGeometry::polygonTexCoords(int polygonIndex) const
+int ModelGeometry::ModelGeometry::nTriangles() const
 {
-    const int polygonSize = polygonsStarts[polygonIndex + 1] - polygonsStarts[polygonIndex];
-    const int startIndex = polygonsStarts[polygonIndex];
-
-    QVector<QVector2D> polygonTexCoords(polygonSize);
-
-    for(int texCoordNumber = 0; texCoordNumber < polygonSize; ++texCoordNumber)
-        polygonTexCoords[texCoordNumber] = texCoords[polygonsTexCoordsIndices[startIndex + texCoordNumber]];
-
-    return polygonTexCoords;
+    return m_nTrianles;
 }
 
-QVector<QVector3D> ModelGeometry::polygonNormals(int polygonIndex) const
+bool ModelGeometry::ModelGeometry::isTriangulated() const
 {
-    const int polygonSize = polygonsStarts[polygonIndex + 1] - polygonsStarts[polygonIndex];
-    const int startIndex = polygonsStarts[polygonIndex];
-
-    QVector<QVector3D> polygonNormals(polygonSize);
-
-    for(int normalNumber = 0; normalNumber < polygonSize; ++normalNumber)
-        polygonNormals[normalNumber] = normals[polygonsNormalsIndices[startIndex + normalNumber]];
-
-    return polygonNormals;
+    return m_nTrianles > 0;
 }
+
+bool ModelGeometry::ModelGeometry::isNormalsRecomputed() const
+{
+    return recomputedNormals.size() > 0;
+}
+
+void ModelGeometry::ModelGeometry::clear()
+{
+    vertices.clear();
+    texCoords.clear();
+    normals.clear();
+    recomputedNormals.clear();
+
+    polygonsVerticesIndices.clear();
+    polygonsTexCoordsIndices.clear();
+    polygonsNormalsIndices.clear();
+
+    polygonsStarts.clear();
+
+    triangulatedPolygonsVerticesIndices.clear();
+    triangulatedPolygonsTexCoordsIndices.clear();
+    triangulatedPolygonsNormalsIndices.clear();
+}
+
+void ModelGeometry::ModelGeometry::triangulate()
+{
+    for(int polygonNumber = 0; polygonNumber < polygonsStarts.size() - 1; ++polygonNumber) {
+        int polygonSize = polygonsStarts[polygonNumber + 1] - polygonsStarts[polygonNumber];
+        int polygonStartInd = polygonsStarts[polygonNumber];
+        for(int triangleNumber = 0; triangleNumber < polygonSize - 2; ++triangleNumber) {
+            m_nTrianles++;
+
+            triangulatedPolygonsVerticesIndices.append({
+                polygonsVerticesIndices[polygonStartInd],
+                polygonsVerticesIndices[polygonStartInd + triangleNumber + 1],
+                polygonsVerticesIndices[polygonStartInd + triangleNumber + 2]
+            });
+
+            triangulatedPolygonsTexCoordsIndices.append({
+                polygonsTexCoordsIndices[polygonStartInd],
+                polygonsTexCoordsIndices[polygonStartInd + triangleNumber + 1],
+                polygonsTexCoordsIndices[polygonStartInd + triangleNumber + 2]
+            });
+
+            triangulatedPolygonsNormalsIndices.append({
+                polygonsNormalsIndices[polygonStartInd],
+                polygonsNormalsIndices[polygonStartInd + triangleNumber + 1],
+                polygonsNormalsIndices[polygonStartInd + triangleNumber + 2]
+            });
+        }
+    }
+}
+
+void ModelGeometry::ModelGeometry::recomputeNormals()
+{
+    recomputedNormals.clear();
+    for(int vertexInd = 1; vertexInd <= vertices.size(); ++vertexInd)
+        recomputedNormals.append(ModelGeometryUtils::calculateNormal(vertexInd, vertices, polygonsVerticesIndices, polygonsStarts));
+}
+
+
+
+

@@ -9,12 +9,13 @@
 
 #include "ModelGeometry/modelgeometry.h"
 #include "Camera/camera.h"
+#include "Array2D/array2d.h"
 
 namespace RenderTools {
 
 void render(
     QImage *image,
-    float **zbuffer,
+    Array2D::Array2D<float> &zbuffer,
     const QVector<QVector3D> &vertices,
     const QVector<int> &polygonsVerticesIndices,
     const QVector<QVector2D> &texCoords,
@@ -41,16 +42,16 @@ QImage render(
 );
 
 QImage render(
-    const ModelGeometry &model,
-    const Camera &camera,
+    const ModelGeometry::ModelGeometry &model,
+    const Camera::Camera &camera,
     const int renderWidth = 1080,
     const int renderHeight = 1080,
     const QColor &modelColor = Qt::white,
     const QColor &backgroundColor = Qt::black);
 
 QImage render(
-    const ModelGeometry &model,
-    const Camera &camera,
+    const ModelGeometry::ModelGeometry &model,
+    const Camera::Camera &camera,
     const QVector3D &lightDirection,
     const int renderWidth = 1080,
     const int renderHeight = 1080,
@@ -58,8 +59,8 @@ QImage render(
     const QColor &backgroundColor = Qt::black);
 
 QImage render(
-    const ModelGeometry &model,
-    const Camera &camera,
+    const ModelGeometry::ModelGeometry &model,
+    const Camera::Camera &camera,
     const QImage &texture,
     const int renderWidth = 1080,
     const int renderHeight = 1080,
@@ -67,8 +68,8 @@ QImage render(
     const QColor &backgroundColor = Qt::black);
 
 QImage render(
-    const ModelGeometry &model,
-    const Camera &camera,
+    const ModelGeometry::ModelGeometry &model,
+    const Camera::Camera &camera,
     const QImage &texture,
     const QVector3D lightDirection,
     const int renderWidth = 1080,
